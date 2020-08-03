@@ -1,5 +1,5 @@
 [package]
-name = "wll-rs"
+name = "wll"
 version = "0.1.0"
 authors = ["miroox <miroox@outlook.com>"]
 edition = "2018"
