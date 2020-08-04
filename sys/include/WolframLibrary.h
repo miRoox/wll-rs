@@ -15,7 +15,7 @@ $Id: WolframLibrary.h,v 1.65 2014/09/30 15:03:51 marks Exp $
 #ifndef WOLFRAMLIBRARY_H
 #define WOLFRAMLIBRARY_H
 
-#include "setjmp.h"
+// #include "setjmp.h"
 
 #define WolframLibraryVersion 6
 
