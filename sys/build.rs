@@ -41,7 +41,7 @@ impl Display for WLError {
 impl Error for WLError { }
 
 fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
-    if let Ok(path) = env::var("WOLFRAM_LIB") {
+    if let Some(path) = env::var_os("WOLFRAM_LIB") {
         let path = PathBuf::from(path);
         let libpath = path.join(wolfram_library_name());
         if libpath.as_path().exists() {
