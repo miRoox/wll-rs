@@ -1,14 +1,18 @@
 extern crate bindgen;
 
 use std::env;
-use std::path::PathBuf;
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
+use std::iter;
+use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let include_path = PathBuf::from("include");
     let wrapper_file = include_path.join("wrapper.h");
-    println!("cargo:rustc-link-search=native={}", find_wolfram_library_path()?.to_str().unwrap());
+    println!(
+        "cargo:rustc-link-search=native={}",
+        find_wolfram_library_path()?.to_str().unwrap()
+    );
     println!("cargo:rustc-link-lib=dylib={}", wolfram_library_name());
     println!("cargo:rerun-if-changed={}", include_path.to_str().unwrap());
     let bindings = bindgen::Builder::default()
@@ -38,7 +42,7 @@ impl Display for WLError {
     }
 }
 
-impl Error for WLError { }
+impl Error for WLError {}
 
 fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
     if let Some(path) = env::var_os("WOLFRAM_LIB") {
@@ -46,8 +50,7 @@ fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
         let libpath = path.join(wolfram_library_name());
         if libpath.as_path().exists() {
             Ok(path)
-        }
-        else {
+        } else {
             Err(WLError::NotExist)
         }
     } else {
