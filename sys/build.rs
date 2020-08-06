@@ -58,6 +58,49 @@ fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
     }
 }
 
+fn search_wolfram_installations() -> Vec<PathBuf> {
+    if let Some(paths) = env::var_os("PATH") {
+        env::split_paths(&paths)
+            .join(default_wolfram_installations())
+            .filter(|p| p.as_path().exists() && p.join(wolfram_kernel_name()).exists())
+            .collect()
+    } else {
+        Vec::new()
+    }
+}
+
+#[cfg(target_os = "windows")]
+fn wolfram_kernel_name() -> &'static str {
+    "math.exe"
+}
+
+#[cfg(not(target_os = "windows"))]
+fn wolfram_kernel_name() -> &'static str {
+    "math"
+}
+
+// see http://reference.wolfram.com/language/ref/$InstallationDirectory.html
+fn default_wolfram_installations() -> Vec<PathBuf> {
+    let base = if cfg!(target_os = "windows") {
+        "C:\\Program Files\\Wolfram Research\\Mathematica\\"
+    } else if cfg!(target_os = "linux") {
+        "/usr/local/Wolfram/Mathematica/"
+    } else if cfg!(target_os = "macos") {
+        return vec![PathBuf::from("/Applications/Mathematica.app/Contents")];
+    } else {
+        return Vec::new();
+    };
+    let base = PathBuf::from(base);
+    if !base.is_dir() {
+        return Vec::new();
+    }
+    base.as_path()
+        .read_dir()
+        .expect("read_dir call failed")
+        .filter_map(Result::ok)
+        .collect()
+}
+
 fn wolfram_library_name() -> String {
     "WolframRTL".to_string()
 }
