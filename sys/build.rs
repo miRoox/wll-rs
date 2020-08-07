@@ -3,7 +3,6 @@ extern crate bindgen;
 use std::env;
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
-use std::iter;
 use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -61,7 +60,7 @@ fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
 fn search_wolfram_installations() -> Vec<PathBuf> {
     if let Some(paths) = env::var_os("PATH") {
         env::split_paths(&paths)
-            .join(default_wolfram_installations())
+            .chain(default_wolfram_installations())
             .filter(|p| p.as_path().exists() && p.join(wolfram_kernel_name()).exists())
             .collect()
     } else {
@@ -97,7 +96,7 @@ fn default_wolfram_installations() -> Vec<PathBuf> {
     base.as_path()
         .read_dir()
         .expect("read_dir call failed")
-        .filter_map(Result::ok)
+        .filter_map(|dir| dir.ok().map(|dir| dir.path()))
         .collect()
 }
 
