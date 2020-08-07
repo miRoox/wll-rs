@@ -45,15 +45,26 @@ impl Error for WLError {}
 
 fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
     if let Some(path) = env::var_os("WOLFRAM_LIB") {
-        let path = PathBuf::from(path);
-        let libpath = path.join(wolfram_library_name());
-        if libpath.as_path().exists() {
-            Ok(path)
-        } else {
-            Err(WLError::NotExist)
-        }
+        check_library_path(PathBuf::from(path))
     } else {
+        for base in search_wolfram_installations() {
+            for rel in relative_library_path() {
+                let path = check_library_path(base.join(rel));
+                if path.is_ok() {
+                    return path;
+                }
+            }
+        }
         Err(WLError::NotFound)
+    }
+}
+
+fn check_library_path(path: PathBuf) -> Result<PathBuf, WLError> {
+    let libpath = path.join(wolfram_library_name());
+    if libpath.as_path().exists() {
+        Ok(path)
+    } else {
+        Err(WLError::NotExist)
     }
 }
 
@@ -66,6 +77,17 @@ fn search_wolfram_installations() -> Vec<PathBuf> {
     } else {
         Vec::new()
     }
+}
+
+fn relative_library_path() -> Vec<PathBuf> {
+    let path = vec![
+        "SystemFiles/Libraries",
+        "Contents/SystemFiles/Libraries",
+        "Contents/Resources/Wolfram Player.app/Contents/SystemFiles/Libraries",
+    ];
+    path.iter()
+        .map(|s| PathBuf::from(*s).join(system_id()))
+        .collect()
 }
 
 #[cfg(target_os = "windows")]
@@ -100,6 +122,21 @@ fn default_wolfram_installations() -> Vec<PathBuf> {
         .collect()
 }
 
-fn wolfram_library_name() -> String {
-    "WolframRTL".to_string()
+#[cfg(all(target_os = "windows", target_arch = "x86_64"))]
+fn system_id() -> &'static str {
+    "Windows-x86-64"
+}
+
+#[cfg(all(target_os = "macos", target_arch = "x86_64"))]
+fn system_id() -> &'static str {
+    "MacOSX-x86-64"
+}
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+fn system_id() -> &'static str {
+    "Linux-x86-64"
+}
+
+fn wolfram_library_name() -> &'static str {
+    "WolframRTL"
 }
