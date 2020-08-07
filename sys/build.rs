@@ -60,7 +60,7 @@ fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
 }
 
 fn check_library_path(path: PathBuf) -> Result<PathBuf, WLError> {
-    let libpath = path.join(wolfram_library_name());
+    let libpath = path.join(wolfram_library_file());
     if libpath.as_path().exists() {
         Ok(path)
     } else {
@@ -139,4 +139,19 @@ fn system_id() -> &'static str {
 
 fn wolfram_library_name() -> &'static str {
     "WolframRTL"
+}
+
+#[cfg(target_os = "windows")]
+fn wolfram_library_file() -> &'static str {
+    "WolframRTL.dll"
+}
+
+#[cfg(target_os = "linux")]
+fn wolfram_library_file() -> &'static str {
+    "WolframRTL.so"
+}
+
+#[cfg(target_os = "macos")]
+fn wolfram_library_file() -> &'static str {
+    "WolframRTL.dylib"
 }
