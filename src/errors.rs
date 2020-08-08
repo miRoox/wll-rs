@@ -1,6 +1,5 @@
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
-use std::os::raw;
 
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub struct WLLError(Repr);
@@ -8,7 +7,7 @@ pub struct WLLError(Repr);
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 enum Repr {
     Simple(ErrorKind),
-    Raw(/*code*/ raw::c_int),
+    Raw(wll_sys::errcode_t),
 }
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
@@ -23,7 +22,7 @@ pub enum ErrorKind {
 }
 
 impl WLLError {
-    pub fn from_raw_error(code: raw::c_int) -> Option<Self> {
+    pub fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         if code == wll_sys::LIBRARY_NO_ERROR {
             None
         } else {
@@ -31,7 +30,7 @@ impl WLLError {
         }
     }
 
-    pub fn to_raw_error(&self) -> raw::c_int {
+    pub fn to_raw_error(&self) -> wll_sys::errcode_t {
         match self.0 {
             Repr::Simple(kind) => kind.to_raw_error(),
             Repr::Raw(code) => code,
@@ -72,7 +71,7 @@ impl From<ErrorKind> for WLLError {
 }
 
 impl ErrorKind {
-    pub(crate) fn to_raw_error(&self) -> raw::c_int {
+    pub(crate) fn to_raw_error(&self) -> wll_sys::errcode_t {
         use ErrorKind::*;
         match *self {
             TypeError => wll_sys::LIBRARY_TYPE_ERROR,
@@ -85,7 +84,7 @@ impl ErrorKind {
         }
     }
 
-    pub(crate) fn from_raw_error(code: raw::c_int) -> Option<Self> {
+    pub(crate) fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         use ErrorKind::*;
         match code {
             wll_sys::LIBRARY_NO_ERROR => unreachable!(),
