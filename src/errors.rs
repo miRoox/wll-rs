@@ -1,11 +1,10 @@
-use std::error::Error;
 use std::fmt::{self, Display, Formatter};
 
 /// The error type for Wolfram LibraryLink.
 ///
 /// **see also**: [Library Structure and Life Cycle: Errors](https://reference.wolfram.com/language/LibraryLink/tutorial/LibraryStructure.html#59563264).
 #[derive(Debug, Eq, PartialEq, Clone)]
-pub struct WLLError(Repr);
+pub struct Error(Repr);
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 enum Repr {
@@ -15,9 +14,9 @@ enum Repr {
 
 /// A list specifying general categories of Wolfram LibraryLink error.
 ///
-/// It is used with the [`WLLError`] type.
+/// It is used with the [`Error`] type.
 ///
-/// [`WLLError`]: ../errors/struct.WLLError.html
+/// [`Error`]: ../errors/struct.Error.html
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum ErrorKind {
     /// Unexpected type encountered.
@@ -36,13 +35,13 @@ pub enum ErrorKind {
     VersionError,
 }
 
-impl WLLError {
-    /// Creates a new instance of an `WLLError` from a raw error code.
+impl Error {
+    /// Creates a new instance of an `Error` from a raw error code.
     pub fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         if code == wll_sys::LIBRARY_NO_ERROR {
             None
         } else {
-            Some(WLLError(Repr::Raw(code)))
+            Some(Error(Repr::Raw(code)))
         }
     }
 
@@ -65,7 +64,7 @@ impl WLLError {
     }
 }
 
-impl Display for WLLError {
+impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         use ErrorKind::*;
         use Repr::*;
@@ -82,11 +81,11 @@ impl Display for WLLError {
     }
 }
 
-impl Error for WLLError {}
+impl std::error::Error for Error {}
 
-impl From<ErrorKind> for WLLError {
+impl From<ErrorKind> for Error {
     fn from(e: ErrorKind) -> Self {
-        WLLError(Repr::Simple(e))
+        Error(Repr::Simple(e))
     }
 }
 
