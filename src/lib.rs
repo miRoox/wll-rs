@@ -1,3 +1,3 @@
 extern crate wll_sys;
 
-mod errors;
+pub mod errors;
