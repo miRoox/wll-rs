@@ -1,6 +1,9 @@
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
 
+/// The error type for Wolfram LibraryLink.
+///
+/// **see also**: [Library Structure and Life Cycle: Errors](https://reference.wolfram.com/language/LibraryLink/tutorial/LibraryStructure.html#59563264).
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub struct WLLError(Repr);
 
@@ -10,18 +13,31 @@ enum Repr {
     Raw(wll_sys::errcode_t),
 }
 
+/// A list specifying general categories of Wolfram LibraryLink error.
+///
+/// It is used with the [`WLLError`] type.
+///
+/// [`WLLError`]: ../errors/struct.WLLError.html
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum ErrorKind {
+    /// Unexpected type encountered.
     TypeError = 1,
+    /// Unexpected rank encountered.
     RankError,
+    /// Inconsistent dimensions encountered.
     DimensionError,
+    /// Error in numerical computation.
     NumericalError,
+    /// Problem allocating memory.
     MemoryError,
+    /// Generic error from a function.
     FunctionError,
+    /// Incompatible version.
     VersionError,
 }
 
 impl WLLError {
+    /// Creates a new instance of an `WLLError` from a raw error code.
     pub fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         if code == wll_sys::LIBRARY_NO_ERROR {
             None
@@ -30,6 +46,7 @@ impl WLLError {
         }
     }
 
+    /// Returns the raw error code that this error represents.
     pub fn to_raw_error(&self) -> wll_sys::errcode_t {
         match self.0 {
             Repr::Simple(kind) => kind.to_raw_error(),
@@ -37,6 +54,9 @@ impl WLLError {
         }
     }
 
+    /// Returns the corresponding [`ErrorKind`] for this error (if any).
+    ///
+    /// [`ErrorKind`]: ../errors/enum.ErrorKind.html
     pub fn kind(&self) -> Option<ErrorKind> {
         match self.0 {
             Repr::Simple(kind) => Some(kind),
