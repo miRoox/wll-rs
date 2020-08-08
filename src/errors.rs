@@ -50,14 +50,14 @@ impl Display for WLLError {
         use ErrorKind::*;
         use Repr::*;
         match self.0 {
-            Simple(TypeError) => write!(f, stringify!(TypeError)),
-            Simple(RankError) => write!(f, stringify!(RankError)),
-            Simple(DimensionError) => write!(f, stringify!(DimensionError)),
-            Simple(NumericalError) => write!(f, stringify!(NumericalError)),
-            Simple(MemoryError) => write!(f, stringify!(MemoryError)),
-            Simple(FunctionError) => write!(f, stringify!(FunctionError)),
-            Simple(VersionError) => write!(f, stringify!(VersionError)),
-            Raw(code) => write!(f, "RawError{{code={}}}", code),
+            Simple(TypeError) => write!(f, "unexpected type encountered"),
+            Simple(RankError) => write!(f, "unexpected rank encountered "),
+            Simple(DimensionError) => write!(f, "inconsistent dimensions encountered"),
+            Simple(NumericalError) => write!(f, "error in numerical computation"),
+            Simple(MemoryError) => write!(f, "problem allocating memory"),
+            Simple(FunctionError) => write!(f, "generic error from a function"),
+            Simple(VersionError) => write!(f, "incompatible version"),
+            Raw(code) => write!(f, "raw error: {}", code),
         }
     }
 }
