@@ -37,6 +37,7 @@ pub enum ErrorKind {
 
 impl Error {
     /// Creates a new instance of an `Error` from a raw error code.
+    #[inline]
     pub fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         if code == wll_sys::LIBRARY_NO_ERROR {
             None
@@ -46,6 +47,7 @@ impl Error {
     }
 
     /// Returns the raw error code that this error represents.
+    #[inline]
     pub fn to_raw_error(&self) -> wll_sys::errcode_t {
         match self.0 {
             Repr::Simple(kind) => kind.to_raw_error(),
@@ -56,6 +58,7 @@ impl Error {
     /// Returns the corresponding [`ErrorKind`] for this error (if any).
     ///
     /// [`ErrorKind`]: ../errors/enum.ErrorKind.html
+    #[inline]
     pub fn kind(&self) -> Option<ErrorKind> {
         match self.0 {
             Repr::Simple(kind) => Some(kind),
@@ -84,12 +87,14 @@ impl Display for Error {
 impl std::error::Error for Error {}
 
 impl From<ErrorKind> for Error {
+    #[inline]
     fn from(e: ErrorKind) -> Self {
         Error(Repr::Simple(e))
     }
 }
 
 impl ErrorKind {
+    #[inline]
     pub(crate) fn to_raw_error(&self) -> wll_sys::errcode_t {
         use ErrorKind::*;
         match *self {
@@ -103,6 +108,7 @@ impl ErrorKind {
         }
     }
 
+    #[inline]
     pub(crate) fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
         use ErrorKind::*;
         match code {

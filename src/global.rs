@@ -5,6 +5,7 @@ use std::mem;
 pub(crate) static mut CURRENT_LIB_DATA: Option<wll_sys::WolframLibraryData> = None;
 
 /// initialize global `WolframLibraryData`.
+#[inline]
 pub unsafe fn initialize_lib_data(
     lib_data: Option<wll_sys::WolframLibraryData>,
 ) -> Result<(), Error> {
@@ -16,6 +17,7 @@ pub unsafe fn initialize_lib_data(
 }
 
 /// get current `WolframLibraryData`.
+#[inline]
 pub unsafe fn get_lib_data() -> &'static Option<wll_sys::WolframLibraryData> {
     &CURRENT_LIB_DATA
 }
@@ -26,6 +28,7 @@ pub struct LibDataLocalizer {
 }
 
 impl From<Option<wll_sys::WolframLibraryData>> for LibDataLocalizer {
+    #[inline]
     fn from(new: Option<wll_sys::WolframLibraryData>) -> Self {
         let mut old = new;
         unsafe {
@@ -36,6 +39,7 @@ impl From<Option<wll_sys::WolframLibraryData>> for LibDataLocalizer {
 }
 
 impl Drop for LibDataLocalizer {
+    #[inline]
     fn drop(&mut self) {
         unsafe {
             mem::swap(&mut self.old, &mut CURRENT_LIB_DATA);
