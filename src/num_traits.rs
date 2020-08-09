@@ -7,8 +7,10 @@ pub trait Number: Clone + PartialEq {
 
 pub trait RealNumber: Number {}
 
-pub trait RealType: RealNumber + Into<f64> {}
-pub trait IntegerType: RealNumber + TryFrom<isize> + TryInto<isize> {}
+pub trait RealType: RealNumber + Into<wll_sys::mreal> {
+    fn from(num: wll_sys::mreal) -> Self;
+}
+pub trait IntegerType: RealNumber + TryFrom<wll_sys::mint> + TryInto<wll_sys::mint> {}
 
 macro_rules! impl_number_trait {
     ($($t:ty),+) => (
@@ -24,7 +26,9 @@ macro_rules! impl_real_number {
 }
 
 macro_rules! impl_real_type {
-    ($($t:ty),+) => ($(impl RealType for $t {})*)
+    ($($t:ty),+) => ($(impl RealType for $t {
+        fn from(num: wll_sys::mreal) -> Self { num as $t }
+    })*)
 }
 
 macro_rules! impl_int_type {
