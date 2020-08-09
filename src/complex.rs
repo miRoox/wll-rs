@@ -99,6 +99,7 @@ where
 {
     type Output = Self;
 
+    #[inline]
     fn div(self, rhs: Self) -> Self::Output {
         let deno = rhs.norm_sqr();
         let re = self.re.clone() * rhs.re.clone() + self.im.clone() * rhs.im.clone();
