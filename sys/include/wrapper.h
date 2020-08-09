@@ -1,4 +1,3 @@
-#include "mdefs.h"
 #include "extern.h"
 #include "dllexport.h"
 #include "WolframLibrary.h"
