@@ -22,14 +22,15 @@ pub unsafe fn get_lib_data() -> &'static Option<wll_sys::WolframLibraryData> {
     &CURRENT_LIB_DATA
 }
 
-/// set current `WolframLibraryData` locally.
+/// RAII wrapper to set current `WolframLibraryData` locally.
 pub struct LibDataLocalizer {
     old: Option<wll_sys::WolframLibraryData>,
 }
 
-impl From<Option<wll_sys::WolframLibraryData>> for LibDataLocalizer {
+impl LibDataLocalizer {
+    /// set current `WolframLibraryData` locally.
     #[inline]
-    fn from(new: Option<wll_sys::WolframLibraryData>) -> Self {
+    pub fn new(new: Option<wll_sys::WolframLibraryData>) -> Self {
         let mut old = new;
         unsafe {
             mem::swap(&mut old, &mut CURRENT_LIB_DATA);
