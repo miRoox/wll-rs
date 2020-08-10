@@ -1,4 +1,4 @@
-use crate::num_traits::{RealNumber, RealType};
+use crate::num_traits::{ComplexType, Number, RealNumber, RealType};
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use std::fmt::Debug;
 
@@ -18,7 +18,43 @@ impl<T: RealNumber> Complex<T> {
     pub fn new(re: T, im: T) -> Self {
         Complex { re, im }
     }
+
+    /// Returns imaginary unit.
+    #[inline]
+    pub fn i() -> Self {
+        Self::new(T::zero(), T::one())
+    }
 }
+
+impl<T: RealNumber> Number for Complex<T> {
+    #[inline]
+    fn zero() -> Self {
+        Self::new(T::zero(), T::zero())
+    }
+
+    #[inline]
+    fn one() -> Self {
+        Self::new(T::one(), T::zero())
+    }
+}
+
+impl<T: RealType> Into<wll_sys::mcomplex> for Complex<T> {
+    #[inline]
+    fn into(self) -> wll_sys::mcomplex {
+        wll_sys::mcomplex {
+            ri: [self.re.into(), self.im.into()],
+        }
+    }
+}
+
+impl<T: RealType> From<wll_sys::mcomplex> for Complex<T> {
+    #[inline]
+    fn from(z: wll_sys::mcomplex) -> Self {
+        Self::new(T::from(z.ri[0]), T::from(z.ri[1]))
+    }
+}
+
+impl<T: RealType> ComplexType for Complex<T> {}
 
 impl<T: RealNumber> Complex<T>
 where
@@ -106,21 +142,5 @@ where
         let re = self.re.clone() * rhs.re.clone() + self.im.clone() * rhs.im.clone();
         let im = self.im * rhs.re - self.re * rhs.im;
         Self::Output::new(re / deno.clone(), im / deno)
-    }
-}
-
-impl<T: RealType> Into<wll_sys::mcomplex> for Complex<T> {
-    #[inline]
-    fn into(self) -> wll_sys::mcomplex {
-        wll_sys::mcomplex {
-            ri: [self.re.into(), self.im.into()],
-        }
-    }
-}
-
-impl From<wll_sys::mcomplex> for Complex<f64> {
-    #[inline]
-    fn from(z: wll_sys::mcomplex) -> Self {
-        Self::new(z.ri[0], z.ri[1])
     }
 }

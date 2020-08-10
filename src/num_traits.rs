@@ -7,6 +7,8 @@ pub trait Number: Clone + PartialEq {
 
 pub trait RealNumber: Number {}
 
+pub trait ComplexType: Number + TryFrom<wll_sys::mcomplex> + TryInto<wll_sys::mcomplex> {}
+
 pub trait RealType: RealNumber + Into<wll_sys::mreal> {
     fn from(num: wll_sys::mreal) -> Self;
 }
