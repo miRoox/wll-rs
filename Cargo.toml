@@ -9,6 +9,7 @@ edition = "2018"
 [workspace]
 members = [
     "sys",
+    "macros",
 ]
 
 [dependencies]
