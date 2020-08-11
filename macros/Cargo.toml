@@ -13,8 +13,13 @@ path = "tests/run-tests.rs"
 
 [dev-dependencies]
 trybuild = { version = "1.0", features = ["diff"] }
-wll = { version = "0.1", path = ".." }
 wll-sys = { version = "0.1", path = "../sys" }
+
+[dev-dependencies.wll]
+version = "0.1"
+path = ".."
+default-features = false
+features = ["no-macros"]
 
 [dependencies]
 syn = { version = "1.0", features = ["full", "extra-traits"] }

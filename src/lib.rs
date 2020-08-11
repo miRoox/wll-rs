@@ -1,3 +1,6 @@
+#[cfg(not(feature = "no-macros"))]
+#[no_link]
+pub extern crate wll_macros;
 extern crate wll_sys;
 
 pub mod complex;

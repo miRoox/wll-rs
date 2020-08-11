@@ -12,5 +12,10 @@ members = [
     "macros",
 ]
 
+[features]
+default = ["wll-macros"]
+no-macros = []
+
 [dependencies]
 wll-sys = { version = "0.1", path = "sys" }
+wll-macros = { version = "0.1", path = "macros", optional = true }
