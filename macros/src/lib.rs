@@ -21,7 +21,7 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
         }
         #[no_mangle]
         pub extern "C" fn WolframLibrary_getVersion() -> ::wll_sys::mint {
-            ::wll_sys::WolframLibraryVersion
+            ::wll_sys::WolframLibraryVersion as ::wll_sys::mint
         }
     })
     .into()
