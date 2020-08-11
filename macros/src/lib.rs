@@ -10,7 +10,7 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
     (quote! {
         #ast
         #[no_mangle]
-        extern "C" pub fn WolframLibrary_initialize(
+        pub extern "C" fn WolframLibrary_initialize(
                 data: std::option::Option<::wll_sys::WolframLibraryData>
             ) -> ::wll_sys::errcode_t {
             if let Err(e) = ::wll::global::initialize_lib_data(data) {
@@ -20,7 +20,7 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
             }
         }
         #[no_mangle]
-        extern "C" pub fn WolframLibrary_getVersion() -> ::wll_sys::mint {
+        pub extern "C" fn WolframLibrary_getVersion() -> ::wll_sys::mint {
             ::wll_sys::WolframLibraryVersion
         }
     })
