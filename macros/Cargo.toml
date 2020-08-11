@@ -17,5 +17,5 @@ wll = { version = "0.1", path = ".." }
 wll-sys = { version = "0.1", path = "../sys" }
 
 [dependencies]
-syn = { version = "1.0", features = ["full"] }
+syn = { version = "1.0", features = ["full", "extra-traits"] }
 quote = "1.0"
