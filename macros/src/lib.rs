@@ -39,3 +39,30 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
     })
     .into()
 }
+
+#[proc_macro_attribute]
+pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let ast = parse_macro_input!(input as ItemFn);
+    let funcall = match &ast.sig {
+        Signature {
+            ident: id,
+            inputs: params,
+            asyncness: None,
+            unsafety: None,
+            variadic: None,
+            output: ReturnType::Default,
+            ..
+        } if params.is_empty() => quote! { #id() },
+        _ => panic!("Invalid function signature!"),
+    };
+    (quote! {
+        #ast
+        #[no_mangle]
+        pub extern "C" fn WolframLibrary_uninitialize(
+                _: std::option::Option<::wll_sys::WolframLibraryData>
+            ) {
+                #funcall;
+            }
+    })
+    .into()
+}
