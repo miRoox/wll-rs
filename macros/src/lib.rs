@@ -2,7 +2,7 @@ extern crate proc_macro;
 
 use crate::proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, ItemFn, ReturnType, Signature};
+use syn::{parse_macro_input, ItemFn, ReturnType, Signature, Type, TypePath};
 
 #[proc_macro_attribute]
 pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
@@ -14,9 +14,15 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
             asyncness: None,
             unsafety: None,
             variadic: None,
-            output: ReturnType::Default,
+            output: ret,
             ..
-        } if params.is_empty() => quote! { #id() },
+        } if params.is_empty() => {
+            if let ReturnType::Type(_, _) = ret {
+                quote! { #id() }
+            } else {
+                quote! { #id() }
+            }
+        }
         _ => panic!("Invalid function signature!"),
     };
     (quote! {
