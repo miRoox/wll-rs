@@ -26,11 +26,3 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
     })
     .into()
 }
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
