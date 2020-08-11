@@ -6,20 +6,20 @@ pub(crate) static mut CURRENT_LIB_DATA: Option<wll_sys::WolframLibraryData> = No
 
 /// initialize global `WolframLibraryData`.
 #[inline]
-pub unsafe fn initialize_lib_data(
-    lib_data: Option<wll_sys::WolframLibraryData>,
-) -> Result<(), Error> {
-    if lib_data.is_none() || CURRENT_LIB_DATA.is_some() {
-        return Err(Error::from(ErrorKind::FunctionError));
+pub fn initialize_lib_data(lib_data: Option<wll_sys::WolframLibraryData>) -> Result<(), Error> {
+    unsafe {
+        if lib_data.is_none() || CURRENT_LIB_DATA.is_some() {
+            return Err(Error::from(ErrorKind::FunctionError));
+        }
+        CURRENT_LIB_DATA = lib_data;
     }
-    CURRENT_LIB_DATA = lib_data;
     Ok(())
 }
 
 /// get current `WolframLibraryData`.
 #[inline]
-pub unsafe fn get_lib_data() -> &'static Option<wll_sys::WolframLibraryData> {
-    &CURRENT_LIB_DATA
+pub fn get_lib_data() -> &'static Option<wll_sys::WolframLibraryData> {
+    unsafe { &CURRENT_LIB_DATA }
 }
 
 /// RAII wrapper to set current `WolframLibraryData` locally.
