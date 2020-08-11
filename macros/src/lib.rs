@@ -2,7 +2,7 @@ extern crate proc_macro;
 
 use crate::proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, ItemFn, ReturnType, Signature, Type, TypePath};
+use syn::{parse_macro_input, ItemFn, ReturnType, Signature};
 
 #[proc_macro_attribute]
 pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
