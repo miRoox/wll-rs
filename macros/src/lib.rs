@@ -29,9 +29,9 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_initialize(
-                data: std::option::Option<::wll_sys::WolframLibraryData>
+                data: ::std::option::Option<::wll_sys::WolframLibraryData>
             ) -> ::wll_sys::errcode_t {
-            if let Err(e) = ::wll::global::initialize_lib_data(data) {
+            if let ::std::result::Result::Err(e) = ::wll::global::initialize_lib_data(data) {
                 e.to_raw_error()
             } else {
                 #funcall;
@@ -65,7 +65,7 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_uninitialize(
-                _: std::option::Option<::wll_sys::WolframLibraryData>
+                _: ::std::option::Option<::wll_sys::WolframLibraryData>
             ) {
                 #funcall;
             }
