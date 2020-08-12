@@ -28,57 +28,27 @@ pub trait MArgumentSetter<T>: Sized {
     fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()>;
 }
 
-impl<T: InputAdaptor<Input = mbool>> MArgumentGetter<mbool> for T {
-    #[inline]
-    fn try_get_arg(arg: MArgument) -> Result<Self> {
-        unsafe {
-            let ptr = arg.boolean;
-            if ptr.is_null() {
-                return Err(Error::from(ErrorKind::TypeError));
+macro_rules! impl_argument_getter {
+    ($t:ty, $fd:ident) => {
+        impl<T: InputAdaptor<Input = $t>> MArgumentGetter<$t> for T {
+            #[inline]
+            fn try_get_arg(arg: MArgument) -> Result<Self> {
+                unsafe {
+                    let ptr = arg.$fd;
+                    if ptr.is_null() {
+                        return Err(Error::from(ErrorKind::TypeError));
+                    }
+                    T::try_from(*ptr)
+                }
             }
-            T::try_from(*ptr)
         }
-    }
+    };
 }
 
-impl<T: InputAdaptor<Input = mint>> MArgumentGetter<mint> for T {
-    #[inline]
-    fn try_get_arg(arg: MArgument) -> Result<Self> {
-        unsafe {
-            let ptr = arg.integer;
-            if ptr.is_null() {
-                return Err(Error::from(ErrorKind::TypeError));
-            }
-            T::try_from(*ptr)
-        }
-    }
-}
-
-impl<T: InputAdaptor<Input = mreal>> MArgumentGetter<mreal> for T {
-    #[inline]
-    fn try_get_arg(arg: MArgument) -> Result<Self> {
-        unsafe {
-            let ptr = arg.real;
-            if ptr.is_null() {
-                return Err(Error::from(ErrorKind::TypeError));
-            }
-            T::try_from(*ptr)
-        }
-    }
-}
-
-impl<T: InputAdaptor<Input = mcomplex>> MArgumentGetter<mcomplex> for T {
-    #[inline]
-    fn try_get_arg(arg: MArgument) -> Result<Self> {
-        unsafe {
-            let ptr = arg.cmplex;
-            if ptr.is_null() {
-                return Err(Error::from(ErrorKind::TypeError));
-            }
-            T::try_from(*ptr)
-        }
-    }
-}
+impl_argument_getter!(mbool, boolean);
+impl_argument_getter!(mint, integer);
+impl_argument_getter!(mreal, real);
+impl_argument_getter!(mcomplex, cmplex);
 
 impl InputAdaptor for bool {
     type Input = mbool;
