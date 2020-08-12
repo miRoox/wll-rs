@@ -45,6 +45,20 @@ macro_rules! impl_argument_getter {
     };
 }
 
+impl<T: OutputAdaptor<Output = mbool>> MArgumentSetter<mbool> for T {
+    #[inline]
+    fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()> {
+        unsafe {
+            let ptr = arg.boolean;
+            if ptr.is_null() {
+                return Err(Error::from(ErrorKind::TypeError));
+            }
+            *ptr = val.try_into()?;
+        }
+        Ok(())
+    }
+}
+
 impl_argument_getter!(mbool, boolean);
 impl_argument_getter!(mint, integer);
 impl_argument_getter!(mreal, real);
