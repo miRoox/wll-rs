@@ -3,6 +3,7 @@
 pub extern crate wll_macros;
 extern crate wll_sys;
 
+pub mod adaptor;
 pub mod complex;
 pub mod errors;
 pub mod global;
