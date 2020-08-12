@@ -18,7 +18,11 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
             ..
         } if params.is_empty() => {
             if let ReturnType::Type(_, _) = ret {
-                quote! { #id() }
+                quote! {
+                    if let ::std::result::Result::Err(e) = #id() {
+                        return e.to_raw_error();
+                    }
+                }
             } else {
                 quote! { #id() }
             }
