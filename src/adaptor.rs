@@ -128,7 +128,7 @@ impl InputAdaptor for bool {
 
     #[inline]
     fn mtype_try_from(input: Self::Input) -> Result<Self> {
-        Ok(input != 0)
+        Ok(input != (wll_sys::False as Self::Input))
     }
 }
 
@@ -137,7 +137,7 @@ impl OutputAdaptor for bool {
 
     #[inline]
     fn try_into_mtype(self) -> Result<Self::Output> {
-        Ok(if self { 1 } else { 0 })
+        Ok(if self { wll_sys::True } else { wll_sys::False } as Self::Output)
     }
 }
 
