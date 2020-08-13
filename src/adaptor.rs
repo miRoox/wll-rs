@@ -26,13 +26,13 @@ impl_mtypes!(mbool mint mreal mcomplex);
 pub trait InputAdaptor: Sized {
     type Input: MType;
 
-    fn try_from(input: Self::Input) -> Result<Self>;
+    fn mtype_try_from(input: Self::Input) -> Result<Self>;
 }
 
 pub trait OutputAdaptor: Sized {
     type Output: MType;
 
-    fn try_into(self) -> Result<Self::Output>;
+    fn try_into_mtype(self) -> Result<Self::Output>;
 }
 
 /// Adaptor trait for getting `MArgument`.
@@ -59,7 +59,7 @@ macro_rules! impl_argument_getter {
                     if ptr.is_null() {
                         return Err(Error::from(ErrorKind::TypeError));
                     }
-                    T::try_from(*ptr)
+                    T::mtype_try_from(*ptr)
                 }
             }
         }
@@ -76,7 +76,7 @@ macro_rules! impl_argument_setter {
                     if ptr.is_null() {
                         return Err(Error::from(ErrorKind::TypeError));
                     }
-                    *ptr = val.try_into()?;
+                    *ptr = val.try_into_mtype()?;
                 }
                 Ok(())
             }
@@ -98,7 +98,7 @@ impl InputAdaptor for bool {
     type Input = mbool;
 
     #[inline]
-    fn try_from(input: Self::Input) -> Result<Self> {
+    fn mtype_try_from(input: Self::Input) -> Result<Self> {
         Ok(input != 0)
     }
 }
@@ -107,7 +107,7 @@ impl OutputAdaptor for bool {
     type Output = mbool;
 
     #[inline]
-    fn try_into(self) -> Result<Self::Output> {
+    fn try_into_mtype(self) -> Result<Self::Output> {
         Ok(if self { 1 } else { 0 })
     }
 }
