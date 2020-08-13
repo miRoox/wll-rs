@@ -142,4 +142,23 @@ macro_rules! impl_complex_real_adaptor {
     };
 }
 
+// Note: Complex<integral type> can only be used in output.
+macro_rules! impl_complex_int_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl OutputAdaptor for Complex<$t> {
+                type Output = mcomplex;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    Ok(Self::Output {
+                        ri: [self.re as mreal, self.im as mreal],
+                    })
+                }
+            }
+        )+
+    };
+}
+
 impl_complex_real_adaptor!(f32, f64);
+impl_complex_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
