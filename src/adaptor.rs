@@ -2,14 +2,35 @@ use crate::errors::{Error, ErrorKind};
 use crate::Result;
 use wll_sys::{mbool, mcomplex, mint, mreal, MArgument};
 
+mod private {
+    pub trait Sealed {}
+}
+
+/// Basic trait for Wolfram LibraryLink underlying type.
+/// Typically doesn’t need to be used directly.
+///
+/// You **CANNOT** implement it outside.
+pub trait MType: private::Sealed + Sized {}
+
+macro_rules! impl_mtypes {
+    ($( $t:ty )+) => {
+        $(
+            impl private::Sealed for $t {}
+            impl MType for $t {}
+        )+
+    };
+}
+
+impl_mtypes!(mbool mint mreal mcomplex);
+
 pub trait InputAdaptor: Sized {
-    type Input;
+    type Input: MType;
 
     fn try_from(input: Self::Input) -> Result<Self>;
 }
 
 pub trait OutputAdaptor: Sized {
-    type Output;
+    type Output: MType;
 
     fn try_into(self) -> Result<Self::Output>;
 }
@@ -17,14 +38,14 @@ pub trait OutputAdaptor: Sized {
 /// Adaptor trait for getting `MArgument`.
 ///
 /// **DO NOT** implement this trait yourself.
-pub trait MArgumentGetter<T>: Sized {
+pub trait MArgumentGetter<T: MType>: Sized {
     fn try_get_arg(arg: MArgument) -> Result<Self>;
 }
 
 /// Adaptor trait for setting `MArgument`.
 ///
 /// **DO NOT** implement this trait yourself.
-pub trait MArgumentSetter<T>: Sized {
+pub trait MArgumentSetter<T: MType>: Sized {
     fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()>;
 }
 
