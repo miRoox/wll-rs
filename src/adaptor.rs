@@ -168,3 +168,26 @@ macro_rules! impl_int_adaptor {
 }
 
 impl_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
+
+macro_rules! impl_real_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl InputAdaptor for $t {
+                type Input = mreal;
+
+                fn mtype_try_from(input: Self::Input) -> Result<Self> {
+                    Ok(input as Self)
+                }
+            }
+            impl OutputAdaptor for $t {
+                type Output = mreal;
+
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    Ok(self as Self::Output)
+                }
+            }
+        )+
+    };
+}
+
+impl_real_adaptor!(f32, f64);
