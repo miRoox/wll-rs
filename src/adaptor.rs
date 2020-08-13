@@ -113,15 +113,17 @@ macro_rules! impl_argument_setter {
     };
 }
 
-impl_argument_getter!(mbool, boolean);
-impl_argument_getter!(mint, integer);
-impl_argument_getter!(mreal, real);
-impl_argument_getter!(mcomplex, cmplex);
+macro_rules! impl_argument_getter_setter {
+    ($t:ty, $fd:ident) => {
+        impl_argument_getter!($t, $fd);
+        impl_argument_setter!($t, $fd);
+    };
+}
 
-impl_argument_setter!(mbool, boolean);
-impl_argument_setter!(mint, integer);
-impl_argument_setter!(mreal, real);
-impl_argument_setter!(mcomplex, cmplex);
+impl_argument_getter_setter!(mbool, boolean);
+impl_argument_getter_setter!(mint, integer);
+impl_argument_getter_setter!(mreal, real);
+impl_argument_getter_setter!(mcomplex, cmplex);
 
 impl InputAdaptor for bool {
     type Input = mbool;
