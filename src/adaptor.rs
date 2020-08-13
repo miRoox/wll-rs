@@ -66,24 +66,33 @@ macro_rules! impl_argument_getter {
     };
 }
 
-impl<T: OutputAdaptor<Output = mbool>> MArgumentSetter<mbool> for T {
-    #[inline]
-    fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()> {
-        unsafe {
-            let ptr = arg.boolean;
-            if ptr.is_null() {
-                return Err(Error::from(ErrorKind::TypeError));
+macro_rules! impl_argument_setter {
+    ($t:ty, $fd:ident) => {
+        impl<T: OutputAdaptor<Output = $t>> MArgumentSetter<$t> for T {
+            #[inline]
+            fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()> {
+                unsafe {
+                    let ptr = arg.$fd;
+                    if ptr.is_null() {
+                        return Err(Error::from(ErrorKind::TypeError));
+                    }
+                    *ptr = val.try_into()?;
+                }
+                Ok(())
             }
-            *ptr = val.try_into()?;
         }
-        Ok(())
-    }
+    };
 }
 
 impl_argument_getter!(mbool, boolean);
 impl_argument_getter!(mint, integer);
 impl_argument_getter!(mreal, real);
 impl_argument_getter!(mcomplex, cmplex);
+
+impl_argument_setter!(mbool, boolean);
+impl_argument_setter!(mint, integer);
+impl_argument_setter!(mreal, real);
+impl_argument_setter!(mcomplex, cmplex);
 
 impl InputAdaptor for bool {
     type Input = mbool;
