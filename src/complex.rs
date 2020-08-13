@@ -1,3 +1,5 @@
+//! Complex numbers.
+
 use crate::adaptor::{InputAdaptor, OutputAdaptor};
 use crate::Result;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};

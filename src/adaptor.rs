@@ -1,3 +1,5 @@
+//! Some adaptor interface for Wolfram LibraryLink.
+
 use crate::errors::{Error, ErrorKind};
 use crate::Result;
 use std::convert::TryInto;

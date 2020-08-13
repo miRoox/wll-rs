@@ -1,3 +1,9 @@
+//! # wll
+//!
+//! Wolfram [LibraryLink] interface for Rust.
+//!
+//! [LibraryLink]: http://reference.wolfram.com/language/LibraryLink/tutorial/Overview.html
+
 #[cfg(not(feature = "no-macros"))]
 #[no_link]
 pub extern crate wll_macros;

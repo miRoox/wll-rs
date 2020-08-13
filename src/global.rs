@@ -1,3 +1,5 @@
+//! Some tools to access the global status.
+
 use crate::errors::{Error, ErrorKind};
 use std::mem;
 

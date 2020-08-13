@@ -1,3 +1,5 @@
+//! Wolfram LibraryLink errors.
+
 use std::fmt::{self, Display, Formatter};
 
 /// The error type for Wolfram LibraryLink.
