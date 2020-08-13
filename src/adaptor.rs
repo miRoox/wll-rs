@@ -141,7 +141,7 @@ impl OutputAdaptor for bool {
     }
 }
 
-macro_rules! impl_int_input_adaptor {
+macro_rules! impl_int_adaptor {
     ($($t:ty),+) => {
         $(
             impl InputAdaptor for $t {
@@ -154,13 +154,6 @@ macro_rules! impl_int_input_adaptor {
                         .map_err(|_| Error::from(ErrorKind::TypeError))
                 }
             }
-        )+
-    }
-}
-
-macro_rules! impl_int_output_adaptor {
-    ($($t:ty),+) => {
-        $(
             impl OutputAdaptor for $t {
                 type Output = mint;
 
@@ -174,5 +167,4 @@ macro_rules! impl_int_output_adaptor {
     }
 }
 
-impl_int_input_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
-impl_int_output_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
+impl_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
