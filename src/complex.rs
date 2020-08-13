@@ -1,5 +1,8 @@
+use crate::adaptor::{InputAdaptor, OutputAdaptor};
+use crate::Result;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use std::fmt::Debug;
+use wll_sys::{mcomplex, mreal};
 
 /// Generic complex number.
 #[repr(C)]
@@ -113,3 +116,30 @@ where
         Self::Output::new(re / deno.clone(), im / deno)
     }
 }
+
+macro_rules! impl_complex_real_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl InputAdaptor for Complex<$t> {
+                type Input = mcomplex;
+
+                #[inline]
+                fn mtype_try_from(input: Self::Input) -> Result<Self> {
+                    Ok(Self::new(input.ri[0] as $t, input.ri[1] as $t))
+                }
+            }
+            impl OutputAdaptor for Complex<$t> {
+                type Output = mcomplex;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    Ok(Self::Output {
+                        ri: [self.re as mreal, self.im as mreal],
+                    })
+                }
+            }
+        )+
+    };
+}
+
+impl_complex_real_adaptor!(f32, f64);
