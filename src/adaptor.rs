@@ -1,5 +1,6 @@
 use crate::errors::{Error, ErrorKind};
 use crate::Result;
+use std::convert::TryInto;
 use wll_sys::{mbool, mcomplex, mint, mreal, MArgument};
 
 mod private {
@@ -139,3 +140,39 @@ impl OutputAdaptor for bool {
         Ok(if self { 1 } else { 0 })
     }
 }
+
+macro_rules! impl_int_input_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl InputAdaptor for $t {
+                type Input = mint;
+
+                #[inline]
+                fn mtype_try_from(input: Self::Input) -> Result<Self> {
+                    input
+                        .try_into()
+                        .map_err(|_| Error::from(ErrorKind::TypeError))
+                }
+            }
+        )+
+    }
+}
+
+macro_rules! impl_int_output_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl OutputAdaptor for $t {
+                type Output = mint;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    self.try_into()
+                        .map_err(|_| Error::from(ErrorKind::TypeError))
+                }
+            }
+        )+
+    }
+}
+
+impl_int_input_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
+impl_int_output_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
