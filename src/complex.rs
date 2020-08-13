@@ -1,64 +1,27 @@
-use crate::num_traits::{ComplexType, Number, RealNumber, RealType};
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use std::fmt::Debug;
 
 /// Generic complex number.
 #[repr(C)]
 #[derive(PartialEq, Eq, Copy, Clone, Hash, Debug, Default)]
-pub struct Complex<T: RealNumber> {
+pub struct Complex<T> {
     /// Real part.
     pub re: T,
     /// Imaginary part.
     pub im: T,
 }
 
-impl<T: RealNumber> Complex<T> {
+impl<T> Complex<T> {
     /// Construct a new complex number.
     #[inline]
     pub fn new(re: T, im: T) -> Self {
         Complex { re, im }
     }
-
-    /// Returns imaginary unit.
-    #[inline]
-    pub fn i() -> Self {
-        Self::new(T::zero(), T::one())
-    }
 }
 
-impl<T: RealNumber> Number for Complex<T> {
-    #[inline]
-    fn zero() -> Self {
-        Self::new(T::zero(), T::zero())
-    }
-
-    #[inline]
-    fn one() -> Self {
-        Self::new(T::one(), T::zero())
-    }
-}
-
-impl<T: RealType> Into<wll_sys::mcomplex> for Complex<T> {
-    #[inline]
-    fn into(self) -> wll_sys::mcomplex {
-        wll_sys::mcomplex {
-            ri: [self.re.into(), self.im.into()],
-        }
-    }
-}
-
-impl<T: RealType> From<wll_sys::mcomplex> for Complex<T> {
-    #[inline]
-    fn from(z: wll_sys::mcomplex) -> Self {
-        Self::new(T::from(z.ri[0]), T::from(z.ri[1]))
-    }
-}
-
-impl<T: RealType> ComplexType for Complex<T> {}
-
-impl<T: RealNumber> Complex<T>
+impl<T> Complex<T>
 where
-    T: Add<Output = T> + Mul<Output = T>,
+    T: Clone + Add<Output = T> + Mul<Output = T>,
 {
     /// Returns the square of the norm.
     #[inline]
@@ -67,9 +30,9 @@ where
     }
 }
 
-impl<T: RealNumber> Complex<T>
+impl<T> Complex<T>
 where
-    T: Neg<Output = T>,
+    T: Clone + Neg<Output = T>,
 {
     /// Returns the complex conjugate.
     #[inline]
@@ -78,23 +41,29 @@ where
     }
 }
 
-impl<T: RealNumber> From<T> for Complex<T> {
+impl<T> From<T> for Complex<T>
+where
+    T: Default,
+{
     #[inline]
     fn from(re: T) -> Self {
-        Self::new(re, T::zero())
+        Self::new(re, T::default())
     }
 }
 
-impl<'a, T: RealNumber> From<&'a T> for Complex<T> {
+impl<'a, T> From<&'a T> for Complex<T>
+where
+    T: Clone + Default,
+{
     #[inline]
     fn from(re: &T) -> Self {
         From::from(re.clone())
     }
 }
 
-impl<T: RealNumber> Add<Complex<T>> for Complex<T>
+impl<T> Add<Complex<T>> for Complex<T>
 where
-    T: Add<Output = T>,
+    T: Clone + Add<Output = T>,
 {
     type Output = Self;
 
@@ -104,9 +73,9 @@ where
     }
 }
 
-impl<T: RealNumber> Sub<Complex<T>> for Complex<T>
+impl<T> Sub<Complex<T>> for Complex<T>
 where
-    T: Sub<Output = T>,
+    T: Clone + Sub<Output = T>,
 {
     type Output = Self;
 
@@ -116,9 +85,9 @@ where
     }
 }
 
-impl<T: RealNumber> Mul<Complex<T>> for Complex<T>
+impl<T> Mul<Complex<T>> for Complex<T>
 where
-    T: Add<Output = T> + Sub<Output = T> + Mul<Output = T>,
+    T: Clone + Add<Output = T> + Sub<Output = T> + Mul<Output = T>,
 {
     type Output = Self;
 
@@ -130,9 +99,9 @@ where
     }
 }
 
-impl<T: RealNumber> Div<Complex<T>> for Complex<T>
+impl<T> Div<Complex<T>> for Complex<T>
 where
-    T: Add<Output = T> + Sub<Output = T> + Mul<Output = T> + Div<Output = T>,
+    T: Clone + Add<Output = T> + Sub<Output = T> + Mul<Output = T> + Div<Output = T>,
 {
     type Output = Self;
 
