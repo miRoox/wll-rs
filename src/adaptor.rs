@@ -23,29 +23,57 @@ macro_rules! impl_mtypes {
 
 impl_mtypes!(mbool mint mreal mcomplex);
 
+/// Adaptor for [`MType`] input.
+///
+/// `InputAdaptor for T` with `type Input = U` implies [`MArgumentGetter`]`<U> for T`
+///
+/// [`MType`]: ./trait.MType.html
+/// [`MArgumentGetter`]: ./trait.MArgumentGetter.html
 pub trait InputAdaptor: Sized {
+    /// Input type.
     type Input: MType;
 
+    /// Performs the conversion.
     fn mtype_try_from(input: Self::Input) -> Result<Self>;
 }
 
+/// Adaptor for [`MType`] output.
+///
+/// `OutputAdaptor for T` with `type Input = U` implies [`MArgumentSetter`]`<U> for T`
+///
+/// [`MType`]: ./trait.MType.html
+/// [`MArgumentSetter`]: ./trait.MArgumentSetter.html
 pub trait OutputAdaptor: Sized {
+    /// Output type.
     type Output: MType;
 
+    /// Performs the conversion.
     fn try_into_mtype(self) -> Result<Self::Output>;
 }
 
 /// Adaptor trait for getting `MArgument`.
+/// Typically doesn’t need to be used directly.
+///
+/// `MArgumentGetter<T>` will be implemented automatically if proper [`InputAdaptor`] has been implemented.
 ///
 /// **DO NOT** implement this trait yourself.
+///
+/// [`InputAdaptor`]: ./trait.InputAdaptor.html
 pub trait MArgumentGetter<T: MType>: Sized {
+    /// Try to get `MArgument`.
     fn try_get_arg(arg: MArgument) -> Result<Self>;
 }
 
 /// Adaptor trait for setting `MArgument`.
+/// Typically doesn’t need to be used directly.
+///
+/// `MArgumentSetter<T>` will be implemented automatically if proper [`OutputAdaptor`] has been implemented.
 ///
 /// **DO NOT** implement this trait yourself.
+///
+/// [`OutputAdaptor`]: ./trait.OutputAdaptor.html
 pub trait MArgumentSetter<T: MType>: Sized {
+    /// Try to set `MArgument`.
     fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()>;
 }
 
