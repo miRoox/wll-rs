@@ -16,7 +16,7 @@ mod private {
 pub trait MType: private::Sealed + Sized {}
 
 macro_rules! impl_mtypes {
-    ($( $t:ty )+) => {
+    ($($t:ty),+) => {
         $(
             impl private::Sealed for $t {}
             impl MType for $t {}
@@ -24,7 +24,7 @@ macro_rules! impl_mtypes {
     };
 }
 
-impl_mtypes!(mbool mint mreal mcomplex);
+impl_mtypes!(mbool, mint, mreal, mcomplex);
 
 /// Adaptor for [`MType`] input.
 ///
