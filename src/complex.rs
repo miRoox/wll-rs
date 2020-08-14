@@ -66,6 +66,8 @@ where
     }
 }
 
+// -- Binary Operator --
+
 impl<T> Add<Complex<T>> for Complex<T>
 where
     T: Clone + Add<Output = T>,
@@ -118,6 +120,69 @@ where
         Self::Output::new(re / deno.clone(), im / deno)
     }
 }
+
+macro_rules! forward_ref_ref_binop {
+    (impl $tr:ident => $method:ident where $($reqs:ident),+) => {
+        impl<'a, 'b, T> $tr<&'b Complex<T>> for &'a Complex<T>
+        where
+            T: Clone $(+ $reqs<Output = T>)+,
+        {
+            type Output = Complex<T>;
+
+            #[inline]
+            fn $method(self, rhs: &'b Complex<T>) -> Self::Output {
+                self.clone().$method(rhs.clone())
+            }
+        }
+    };
+}
+
+macro_rules! forward_val_ref_binop {
+    (impl $tr:ident => $method:ident where $($reqs:ident),+) => {
+        impl<'a, T> $tr<Complex<T>> for &'a Complex<T>
+        where
+            T: Clone $(+ $reqs<Output = T>)+,
+        {
+            type Output = Complex<T>;
+
+            #[inline]
+            fn $method(self, rhs: Complex<T>) -> Self::Output {
+                self.clone().$method(rhs)
+            }
+        }
+    };
+}
+
+macro_rules! forward_ref_val_binop {
+    (impl $tr:ident => $method:ident where $($reqs:ident),+) => {
+        impl<'a, T> $tr<&'a Complex<T>> for Complex<T>
+        where
+            T: Clone $(+ $reqs<Output = T>)+,
+        {
+            type Output = Complex<T>;
+
+            #[inline]
+            fn $method(self, rhs: &'a Complex<T>) -> Self::Output {
+                self.$method(rhs.clone())
+            }
+        }
+    };
+}
+
+macro_rules! forward_all_binop {
+    (impl $tr:ident => $method:ident where $($reqs:ident),+) => {
+        forward_ref_ref_binop!(impl $tr => $method where $($reqs),+);
+        forward_val_ref_binop!(impl $tr => $method where $($reqs),+);
+        forward_ref_val_binop!(impl $tr => $method where $($reqs),+);
+    };
+}
+
+forward_all_binop!(impl Add => add where Add);
+forward_all_binop!(impl Sub => sub where Sub);
+forward_all_binop!(impl Mul => mul where Add, Sub, Mul);
+forward_all_binop!(impl Div => div where Add, Sub, Mul, Div);
+
+// -- Adaptor --
 
 macro_rules! impl_complex_real_adaptor {
     ($($t:ty),+) => {
