@@ -24,6 +24,28 @@ impl<T> Complex<T> {
     }
 }
 
+impl<T> From<T> for Complex<T>
+where
+    T: Default,
+{
+    #[inline]
+    fn from(re: T) -> Self {
+        Self::new(re, T::default())
+    }
+}
+
+impl<'a, T> From<&'a T> for Complex<T>
+where
+    T: Clone + Default,
+{
+    #[inline]
+    fn from(re: &T) -> Self {
+        From::from(re.clone())
+    }
+}
+
+// -- Unary Operator --
+
 impl<T> Complex<T>
 where
     T: Clone + Add<Output = T> + Mul<Output = T>,
@@ -46,23 +68,27 @@ where
     }
 }
 
-impl<T> From<T> for Complex<T>
+impl<T> Neg for Complex<T>
 where
-    T: Default,
+    T: Neg<Output = T>,
 {
+    type Output = Self;
+
     #[inline]
-    fn from(re: T) -> Self {
-        Self::new(re, T::default())
+    fn neg(self) -> Self::Output {
+        Self::Output::new(-self.re, -self.im)
     }
 }
 
-impl<'a, T> From<&'a T> for Complex<T>
+impl<'a, T> Neg for &'a Complex<T>
 where
-    T: Clone + Default,
+    T: Clone + Neg<Output = T>,
 {
+    type Output = Complex<T>;
+
     #[inline]
-    fn from(re: &T) -> Self {
-        From::from(re.clone())
+    fn neg(self) -> Self::Output {
+        -self.clone()
     }
 }
 
