@@ -208,6 +208,73 @@ forward_all_binop!(impl Sub => sub where Sub);
 forward_all_binop!(impl Mul => mul where Add, Sub, Mul);
 forward_all_binop!(impl Div => div where Add, Sub, Mul, Div);
 
+// Operator Assign
+
+impl<T> AddAssign for Complex<T>
+where
+    T: AddAssign,
+{
+    #[inline]
+    fn add_assign(&mut self, rhs: Self) {
+        self.re += rhs.re;
+        self.im += rhs.im;
+    }
+}
+
+impl<T> SubAssign for Complex<T>
+where
+    T: SubAssign,
+{
+    #[inline]
+    fn sub_assign(&mut self, rhs: Self) {
+        self.re -= rhs.re;
+        self.im -= rhs.im;
+    }
+}
+
+impl<T> MulAssign for Complex<T>
+where
+    T: Clone + AddAssign + SubAssign + MulAssign,
+{
+    #[allow(clippy::suspicious_op_assign_impl)]
+    #[inline]
+    fn mul_assign(&mut self, rhs: Self) {
+        let mut imim = self.im.clone();
+        imim *= rhs.im.clone();
+        self.re *= rhs.re.clone();
+        self.re -= imim;
+        let mut reim = self.re.clone();
+        reim *= rhs.im;
+        self.im *= rhs.re;
+        self.im += reim;
+    }
+}
+
+impl<T> DivAssign for Complex<T>
+where
+    T: Clone + AddAssign + SubAssign + MulAssign + DivAssign,
+{
+    #[allow(clippy::suspicious_op_assign_impl)]
+    #[inline]
+    fn div_assign(&mut self, rhs: Self) {
+        let mut rhs_im2 = rhs.im.clone();
+        rhs_im2 *= rhs.im.clone();
+        let mut deno = rhs.re.clone();
+        deno *= rhs.re.clone();
+        deno += rhs_im2;
+        let mut imim = self.im.clone();
+        imim *= rhs.im.clone();
+        self.re *= rhs.re.clone();
+        self.re += imim;
+        self.re /= deno.clone();
+        let mut reim = self.re.clone();
+        reim *= rhs.im;
+        self.im *= rhs.re;
+        self.im -= reim;
+        self.im /= deno;
+    }
+}
+
 // -- Adaptor --
 
 macro_rules! impl_complex_real_adaptor {
