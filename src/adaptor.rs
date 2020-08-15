@@ -26,6 +26,15 @@ macro_rules! impl_mtypes {
 
 impl_mtypes!(mbool, mint, mreal, mcomplex);
 
+/// [`MType`] or `()`.
+/// Typically doesn’t need to be used directly.
+///
+/// [`MType`]: ./trait.MType.html
+pub trait MTypeOrVoid {}
+
+impl<T: MType> MTypeOrVoid for T {}
+impl MTypeOrVoid for () {}
+
 /// Adaptor for [`MType`] input.
 ///
 /// `InputAdaptor for T` with `type Input = U` implies [`MArgumentGetter`]`<U> for T`
@@ -75,9 +84,16 @@ pub trait MArgumentGetter<T: MType>: Sized {
 /// **DO NOT** implement this trait yourself.
 ///
 /// [`OutputAdaptor`]: ./trait.OutputAdaptor.html
-pub trait MArgumentSetter<T: MType>: Sized {
+pub trait MArgumentSetter<T: MTypeOrVoid>: Sized {
     /// Try to set `MArgument`.
     fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()>;
+}
+
+impl MArgumentSetter<()> for () {
+    #[inline]
+    fn try_set_arg(_arg: &mut MArgument, _val: Self) -> Result<()> {
+        Ok(())
+    }
 }
 
 macro_rules! impl_argument_getter {
