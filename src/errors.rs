@@ -1,6 +1,7 @@
 //! Wolfram LibraryLink errors.
 
 use std::fmt::{self, Display, Formatter};
+use wll_sys::errcode_t;
 
 /// The error type for Wolfram LibraryLink.
 ///
@@ -11,7 +12,7 @@ pub struct Error(Repr);
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 enum Repr {
     Simple(ErrorKind),
-    Raw(wll_sys::errcode_t),
+    Raw(errcode_t),
 }
 
 /// A list specifying general categories of Wolfram LibraryLink error.
@@ -40,7 +41,7 @@ pub enum ErrorKind {
 impl Error {
     /// Creates a new instance of an `Error` from a raw error code.
     #[inline]
-    pub fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
+    pub fn from_raw_error(code: errcode_t) -> Option<Self> {
         if code == wll_sys::LIBRARY_NO_ERROR {
             None
         } else {
@@ -50,7 +51,7 @@ impl Error {
 
     /// Returns the raw error code that this error represents.
     #[inline]
-    pub fn to_raw_error(&self) -> wll_sys::errcode_t {
+    pub fn to_raw_error(&self) -> errcode_t {
         match self.0 {
             Repr::Simple(kind) => kind.to_raw_error(),
             Repr::Raw(code) => code,
@@ -97,7 +98,7 @@ impl From<ErrorKind> for Error {
 
 impl ErrorKind {
     #[inline]
-    pub(crate) fn to_raw_error(&self) -> wll_sys::errcode_t {
+    pub(crate) fn to_raw_error(&self) -> errcode_t {
         use ErrorKind::*;
         match *self {
             TypeError => wll_sys::LIBRARY_TYPE_ERROR,
@@ -111,7 +112,7 @@ impl ErrorKind {
     }
 
     #[inline]
-    pub(crate) fn from_raw_error(code: wll_sys::errcode_t) -> Option<Self> {
+    pub(crate) fn from_raw_error(code: errcode_t) -> Option<Self> {
         use ErrorKind::*;
         match code {
             wll_sys::LIBRARY_NO_ERROR => unreachable!(),
