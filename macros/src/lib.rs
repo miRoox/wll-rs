@@ -8,6 +8,9 @@ use crate::proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, ItemFn, ReturnType, Signature};
 
+/// Mark the function as the initialization function for Wolfram LibraryLink.
+///
+/// **see also**: [Library Structure and Life Cycle: Initialization](https://reference.wolfram.com/language/LibraryLink/tutorial/LibraryStructure.html#280210622)
 #[proc_macro_attribute]
 pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as ItemFn);
@@ -54,6 +57,9 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
     .into()
 }
 
+/// Mark the function as the uninitialization function for Wolfram LibraryLink.
+///
+/// **see also**: [Library Structure and Life Cycle: Uninitialization](https://reference.wolfram.com/language/LibraryLink/tutorial/LibraryStructure.html#441777402)
 #[proc_macro_attribute]
 pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(input as ItemFn);
