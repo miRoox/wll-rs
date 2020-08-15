@@ -37,6 +37,7 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
         _ => panic!("Invalid function signature!"),
     };
     (quote! {
+        #[inline(always)]
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_initialize(
@@ -76,6 +77,7 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
         _ => panic!("Invalid function signature!"),
     };
     (quote! {
+        #[inline(always)]
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_uninitialize(
