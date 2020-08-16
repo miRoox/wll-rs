@@ -322,3 +322,111 @@ macro_rules! impl_complex_int_adaptor {
 
 impl_complex_real_adaptor!(f32, f64);
 impl_complex_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const EPS: f64 = 1e-10;
+
+    #[test]
+    fn convert_int() {
+        assert_eq!(Complex::from(1), Complex::new(1, 0));
+    }
+
+    #[test]
+    fn convert_real() {
+        assert_eq!(Complex::from(1.), Complex::new(1., 0.));
+    }
+
+    #[test]
+    fn norm_sqr_int() {
+        assert_eq!(Complex::new(-5, 12).norm_sqr(), 169);
+    }
+
+    #[test]
+    fn norm_sqr_real() {
+        assert!((Complex::new(3.0, -4.0).norm_sqr() - 25f64).abs() <= EPS)
+    }
+
+    #[test]
+    fn conj_int() {
+        assert_eq!(Complex::new(-2, 1).conj(), Complex::new(-2, -1));
+    }
+
+    #[test]
+    fn conj_real() {
+        let a = Complex::new(1.2, -3.1);
+        let ca = a.conj();
+        let b = Complex::new(1.2f64, 3.1f64);
+        assert!((ca.re - b.re).abs() <= EPS && (ca.im - b.im).abs() <= EPS)
+    }
+
+    #[test]
+    fn add_complex_int() {
+        let a = Complex::new(2, 1);
+        let b = Complex::new(3, -7);
+        let c = Complex::new(5, -6);
+        assert_eq!(a + b, c);
+    }
+
+    #[test]
+    fn add_complex_real() {
+        let a = Complex::new(0.1, -3.7);
+        let b = Complex::new(2.4, 1.48);
+        let c = Complex::new(2.5f64, -2.22f64);
+        let ab = a + b;
+        assert!((ab.re - c.re).abs() <= EPS && (ab.im - c.im).abs() <= EPS);
+    }
+
+    #[test]
+    fn sub_complex_int() {
+        let a = Complex::new(2, 1);
+        let b = Complex::new(3, -7);
+        let c = Complex::new(-1, 8);
+        assert_eq!(a - b, c);
+    }
+
+    #[test]
+    fn sub_complex_real() {
+        let a = Complex::new(0.1, -3.7);
+        let b = Complex::new(2.4, 1.48);
+        let c = Complex::new(-2.3f64, -5.18f64);
+        let ab = a - b;
+        assert!((ab.re - c.re).abs() <= EPS && (ab.im - c.im).abs() <= EPS);
+    }
+
+    #[test]
+    fn mul_complex_int() {
+        let a = Complex::new(2, 1);
+        let b = Complex::new(3, -7);
+        let c = Complex::new(13, -11);
+        assert_eq!(a * b, c);
+    }
+
+    #[test]
+    fn mul_complex_real() {
+        let a = Complex::new(0.1, -3.7);
+        let b = Complex::new(2.4, 1.48);
+        let c = Complex::new(5.716f64, -8.732f64);
+        let ab = a * b;
+        assert!((ab.re - c.re).abs() <= EPS && (ab.im - c.im).abs() <= EPS);
+    }
+
+    #[test]
+    fn div_complex_int() {
+        let a = Complex::new(2, 1);
+        let b = Complex::new(3, -7);
+        let c = Complex::new(0, -3);
+        assert_eq!(b / a, c);
+    }
+
+    #[test]
+    fn div_complex_real() {
+        let a = Complex::new(0.5, -1.2);
+        let b = Complex::new(4.6, -0.9);
+        let c = Complex::new(2f64, 3f64);
+        let ab = b / a;
+        assert!((ab.re - c.re).abs() <= EPS && (ab.im - c.im).abs() <= EPS);
+    }
+}
