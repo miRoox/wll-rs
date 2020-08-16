@@ -72,17 +72,16 @@ impl Error {
 
 impl Display for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        use ErrorKind::*;
         use Repr::*;
         match self.0 {
-            Simple(TypeError) => write!(f, "unexpected type encountered"),
-            Simple(RankError) => write!(f, "unexpected rank encountered "),
-            Simple(DimensionError) => write!(f, "inconsistent dimensions encountered"),
-            Simple(NumericalError) => write!(f, "error in numerical computation"),
-            Simple(MemoryError) => write!(f, "problem allocating memory"),
-            Simple(FunctionError) => write!(f, "generic error from a function"),
-            Simple(VersionError) => write!(f, "incompatible version"),
-            Raw(code) => write!(f, "raw error: {}", code),
+            Simple(kind) => write!(f, "{}", kind),
+            Raw(code) => {
+                if let Some(kind) = ErrorKind::from_raw_error(code) {
+                    write!(f, "{}", kind)
+                } else {
+                    write!(f, "unknown error code: {}", code)
+                }
+            }
         }
     }
 }
@@ -124,6 +123,21 @@ impl ErrorKind {
             wll_sys::LIBRARY_FUNCTION_ERROR => Some(FunctionError),
             wll_sys::LIBRARY_VERSION_ERROR => Some(VersionError),
             _ => None,
+        }
+    }
+}
+
+impl Display for ErrorKind {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        use ErrorKind::*;
+        match *self {
+            TypeError => write!(f, "unexpected type encountered"),
+            RankError => write!(f, "unexpected rank encountered "),
+            DimensionError => write!(f, "inconsistent dimensions encountered"),
+            NumericalError => write!(f, "error in numerical computation"),
+            MemoryError => write!(f, "problem allocating memory"),
+            FunctionError => write!(f, "generic error from a function"),
+            VersionError => write!(f, "incompatible version"),
         }
     }
 }
