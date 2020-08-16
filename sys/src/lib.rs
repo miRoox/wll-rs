@@ -12,3 +12,6 @@
 #![allow(non_snake_case)]
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+
+pub const TRUE: mbool = True as mbool;
+pub const FALSE: mbool = False as mbool;
