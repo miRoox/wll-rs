@@ -106,7 +106,7 @@ macro_rules! impl_argument_getter {
                     if ptr.is_null() {
                         return Err(Error::from(ErrorKind::TypeError));
                     }
-                    T::mtype_try_from(*ptr)
+                    T::mtype_try_from(std::ptr::read(ptr))
                 }
             }
         }
@@ -123,7 +123,7 @@ macro_rules! impl_argument_setter {
                     if ptr.is_null() {
                         return Err(Error::from(ErrorKind::TypeError));
                     }
-                    *ptr = val.try_into_mtype()?;
+                    std::ptr::write(ptr, val.try_into_mtype()?);
                 }
                 Ok(())
             }
