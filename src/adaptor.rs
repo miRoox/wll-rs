@@ -211,3 +211,60 @@ macro_rules! impl_real_adaptor {
 }
 
 impl_real_adaptor!(f32, f64);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::mem;
+    use wll_sys::{mbool, MArgument};
+
+    #[test]
+    fn bool_true_input() {
+        assert_eq!(bool::mtype_try_from(wll_sys::TRUE), Ok(true));
+    }
+
+    #[test]
+    fn bool_false_input() {
+        assert_eq!(bool::mtype_try_from(wll_sys::FALSE), Ok(false));
+    }
+
+    #[test]
+    fn bool_true_output() {
+        assert_eq!(true.try_into_mtype(), Ok(wll_sys::TRUE));
+    }
+
+    #[test]
+    fn bool_false_output() {
+        assert_eq!(false.try_into_mtype(), Ok(wll_sys::FALSE));
+    }
+
+    #[test]
+    fn bool_true_get() {
+        let mut mb = wll_sys::TRUE;
+        let arg = MArgument { boolean: &mut mb };
+        assert_eq!(bool::try_get_arg(arg), Ok(true));
+    }
+
+    #[test]
+    fn bool_false_get() {
+        let mut mb = wll_sys::FALSE;
+        let arg = MArgument { boolean: &mut mb };
+        assert_eq!(bool::try_get_arg(arg), Ok(false));
+    }
+
+    #[test]
+    fn bool_true_set() {
+        let mut mb: mbool = unsafe { mem::zeroed() };
+        let mut arg = MArgument { boolean: &mut mb };
+        let res = bool::try_set_arg(&mut arg, true);
+        assert_eq!((mb, res), (wll_sys::TRUE, Ok(())));
+    }
+
+    #[test]
+    fn bool_false_set() {
+        let mut mb: mbool = unsafe { mem::zeroed() };
+        let mut arg = MArgument { boolean: &mut mb };
+        let res = bool::try_set_arg(&mut arg, false);
+        assert_eq!((mb, res), (wll_sys::FALSE, Ok(())));
+    }
+}
