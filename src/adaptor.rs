@@ -215,7 +215,7 @@ impl_real_adaptor!(f32, f64);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::mem;
+    use std::mem::MaybeUninit;
     use wll_sys::{mbool, MArgument};
 
     #[test]
@@ -254,17 +254,23 @@ mod tests {
 
     #[test]
     fn bool_true_set() {
-        let mut mb: mbool = unsafe { mem::zeroed() };
-        let mut arg = MArgument { boolean: &mut mb };
+        let mut mb = MaybeUninit::<mbool>::uninit();
+        let mut arg = MArgument {
+            boolean: mb.as_mut_ptr(),
+        };
         let res = true.try_set_arg(&mut arg);
+        let mb = unsafe { mb.assume_init() };
         assert_eq!((mb, res), (wll_sys::TRUE, Ok(())));
     }
 
     #[test]
     fn bool_false_set() {
-        let mut mb: mbool = unsafe { mem::zeroed() };
-        let mut arg = MArgument { boolean: &mut mb };
+        let mut mb = MaybeUninit::<mbool>::uninit();
+        let mut arg = MArgument {
+            boolean: mb.as_mut_ptr(),
+        };
         let res = false.try_set_arg(&mut arg);
+        let mb = unsafe { mb.assume_init() };
         assert_eq!((mb, res), (wll_sys::FALSE, Ok(())));
     }
 }
