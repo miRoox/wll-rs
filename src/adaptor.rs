@@ -86,12 +86,12 @@ pub trait MArgumentGetter<T: MType>: Sized {
 /// [`OutputAdaptor`]: ./trait.OutputAdaptor.html
 pub trait MArgumentSetter<T: MTypeOrVoid>: Sized {
     /// Try to set `MArgument`.
-    fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()>;
+    fn try_set_arg(self, arg: &mut MArgument) -> Result<()>;
 }
 
 impl MArgumentSetter<()> for () {
     #[inline]
-    fn try_set_arg(_arg: &mut MArgument, _val: Self) -> Result<()> {
+    fn try_set_arg(self, _arg: &mut MArgument) -> Result<()> {
         Ok(())
     }
 }
@@ -117,13 +117,13 @@ macro_rules! impl_argument_setter {
     ($t:ty, $fd:ident) => {
         impl<T: OutputAdaptor<Output = $t>> MArgumentSetter<$t> for T {
             #[inline]
-            fn try_set_arg(arg: &mut MArgument, val: Self) -> Result<()> {
+            fn try_set_arg(self, arg: &mut MArgument) -> Result<()> {
                 unsafe {
                     let ptr = arg.$fd;
                     if ptr.is_null() {
                         return Err(Error::from(ErrorKind::TypeError));
                     }
-                    std::ptr::write(ptr, val.try_into_mtype()?);
+                    std::ptr::write(ptr, self.try_into_mtype()?);
                 }
                 Ok(())
             }
@@ -256,7 +256,7 @@ mod tests {
     fn bool_true_set() {
         let mut mb: mbool = unsafe { mem::zeroed() };
         let mut arg = MArgument { boolean: &mut mb };
-        let res = bool::try_set_arg(&mut arg, true);
+        let res = true.try_set_arg(&mut arg);
         assert_eq!((mb, res), (wll_sys::TRUE, Ok(())));
     }
 
@@ -264,7 +264,7 @@ mod tests {
     fn bool_false_set() {
         let mut mb: mbool = unsafe { mem::zeroed() };
         let mut arg = MArgument { boolean: &mut mb };
-        let res = bool::try_set_arg(&mut arg, false);
+        let res = false.try_set_arg(&mut arg);
         assert_eq!((mb, res), (wll_sys::FALSE, Ok(())));
     }
 }
