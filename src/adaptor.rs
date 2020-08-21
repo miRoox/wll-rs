@@ -255,7 +255,7 @@ mod tests {
     #[test]
     fn bool_true_set() {
         let mut mb = MaybeUninit::<mbool>::uninit();
-        let mut arg = MArgument {
+        let arg = MArgument {
             boolean: mb.as_mut_ptr(),
         };
         let res = true.try_set_arg(&arg);
@@ -266,7 +266,7 @@ mod tests {
     #[test]
     fn bool_false_set() {
         let mut mb = MaybeUninit::<mbool>::uninit();
-        let mut arg = MArgument {
+        let arg = MArgument {
             boolean: mb.as_mut_ptr(),
         };
         let res = false.try_set_arg(&arg);
