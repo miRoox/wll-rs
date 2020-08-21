@@ -93,6 +93,9 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
     .into()
 }
 
+/// Export function for Wolfram LibraryLink.
+///
+/// *see also*: [Library Structure and Life Cycle: Functions, Arguments, and Results](https://reference.wolfram.com/language/LibraryLink/tutorial/LibraryStructure.html#606935091)
 #[proc_macro_attribute]
 pub fn wll_export(args: TokenStream, input: TokenStream) -> TokenStream {
     let args = parse_macro_input!(args as AttributeArgs);
