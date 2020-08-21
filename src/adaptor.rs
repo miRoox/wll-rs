@@ -86,12 +86,12 @@ pub trait MArgumentGetter<T: MType>: Sized {
 /// [`OutputAdaptor`]: ./trait.OutputAdaptor.html
 pub trait MArgumentSetter<T: MTypeOrVoid>: Sized {
     /// Try to set `MArgument`.
-    fn try_set_arg(self, arg: &mut MArgument) -> Result<()>;
+    fn try_set_arg(self, arg: &MArgument) -> Result<()>;
 }
 
 impl MArgumentSetter<()> for () {
     #[inline]
-    fn try_set_arg(self, _arg: &mut MArgument) -> Result<()> {
+    fn try_set_arg(self, _arg: &MArgument) -> Result<()> {
         Ok(())
     }
 }
@@ -117,7 +117,7 @@ macro_rules! impl_argument_setter {
     ($t:ty, $fd:ident) => {
         impl<T: OutputAdaptor<Output = $t>> MArgumentSetter<$t> for T {
             #[inline]
-            fn try_set_arg(self, arg: &mut MArgument) -> Result<()> {
+            fn try_set_arg(self, arg: &MArgument) -> Result<()> {
                 unsafe {
                     let ptr = arg.$fd;
                     if ptr.is_null() {
