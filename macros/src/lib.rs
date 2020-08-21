@@ -34,7 +34,7 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
                 quote! { #id() }
             }
         }
-        _ => panic!("Invalid function signature!"),
+        sig => syn::Error::new(sig.span(), "Invalid function signature!").to_compile_error(),
     };
     (quote! {
         #[inline(always)]
@@ -74,7 +74,7 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
             output: ReturnType::Default,
             ..
         } if params.is_empty() => quote! { #id() },
-        _ => panic!("Invalid function signature!"),
+        sig => syn::Error::new(sig.span(), "Invalid function signature!").to_compile_error(),
     };
     (quote! {
         #[inline(always)]
