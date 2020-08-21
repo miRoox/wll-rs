@@ -5,8 +5,9 @@
 extern crate proc_macro;
 
 use crate::proc_macro::TokenStream;
-use quote::quote;
-use syn::{parse_macro_input, ItemFn, ReturnType, Signature};
+use quote::{format_ident, quote, ToTokens};
+use syn::spanned::Spanned;
+use syn::{parse_macro_input, AttributeArgs, ItemFn, Lit, Meta, NestedMeta, ReturnType, Signature};
 
 /// Mark the function as the initialization function for Wolfram LibraryLink.
 ///
@@ -87,4 +88,49 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
             }
     })
     .into()
+}
+
+#[proc_macro_attribute]
+pub fn wll_export(args: TokenStream, input: TokenStream) -> TokenStream {
+    let args = parse_macro_input!(args as AttributeArgs);
+    let input = parse_macro_input!(input as ItemFn);
+    let Signature { ident: funame, .. } = &input.sig;
+    let exportname = match args.len() {
+        0 => format_ident!("wll_{}", funame).into_token_stream(),
+        _ => get_export_name_from_meta(&args[0]),
+    };
+    (quote! {
+        #[inline]
+        #input
+        #[no_mangle]
+        pub unsafe extern "C" fn #exportname(
+            lib_data: ::std::option::Option<::wll_sys::WolframLibraryData>,
+            argc: ::wll_sys::mint,
+            args: *const ::wll_sys::MArgument,
+            res: ::wll_sys::MArgument,
+        ) -> ::wll_sys::errcode_t {
+            // TODO
+        }
+    })
+    .into()
+}
+
+fn get_export_name_from_meta(meta: &NestedMeta) -> proc_macro2::TokenStream {
+    match meta {
+        NestedMeta::Meta(Meta::Path(path)) => {
+            if let Some(ident) = path.get_ident() {
+                ident.to_token_stream()
+            } else {
+                syn::Error::new(path.span(), "expected identifier for export name.")
+                    .to_compile_error()
+            }
+        }
+        NestedMeta::Lit(Lit::Str(str)) => match str.parse::<syn::Ident>() {
+            Ok(ident) => ident.into_token_stream(),
+            Err(e) => e.to_compile_error(),
+        },
+        other => {
+            syn::Error::new(other.span(), "expected identifier for export name.").to_compile_error()
+        }
+    }
 }
