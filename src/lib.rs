@@ -9,6 +9,11 @@
 pub extern crate wll_macros;
 extern crate wll_sys;
 
+pub use complex::Complex;
+pub use errors::{Error, ErrorKind};
+#[cfg(not(feature = "no-macros"))]
+pub use wll_macros::{wll_export, wll_setup, wll_teardown};
+
 pub mod adaptor;
 pub mod complex;
 pub mod errors;
