@@ -258,7 +258,7 @@ mod tests {
         let mut arg = MArgument {
             boolean: mb.as_mut_ptr(),
         };
-        let res = true.try_set_arg(&mut arg);
+        let res = true.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
         assert_eq!((mb, res), (wll_sys::TRUE, Ok(())));
     }
@@ -269,7 +269,7 @@ mod tests {
         let mut arg = MArgument {
             boolean: mb.as_mut_ptr(),
         };
-        let res = false.try_set_arg(&mut arg);
+        let res = false.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
         assert_eq!((mb, res), (wll_sys::FALSE, Ok(())));
     }
