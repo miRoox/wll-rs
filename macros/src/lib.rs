@@ -5,7 +5,7 @@
 extern crate proc_macro;
 
 use crate::proc_macro::TokenStream;
-use quote::{format_ident, quote, ToTokens};
+use quote::{format_ident, quote, quote_spanned, ToTokens};
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, AttributeArgs, ItemFn, Lit, Meta, NestedMeta, ReturnType, Signature};
 
@@ -25,14 +25,14 @@ pub fn wll_setup(_args: TokenStream, input: TokenStream) -> TokenStream {
             output: ret,
             ..
         } if params.is_empty() => {
-            if let ReturnType::Type(_, _) = ret {
-                quote! {
+            if let ReturnType::Type(_, ty) = ret {
+                quote_spanned! { ty.span() =>
                     if let ::std::result::Result::Err(e) = #id() {
                         return e.to_raw_error();
                     }
                 }
             } else {
-                quote! { #id() }
+                quote_spanned! { id.span() => #id() }
             }
         }
         sig => syn::Error::new(sig.span(), "Invalid function signature!").to_compile_error(),
@@ -74,7 +74,7 @@ pub fn wll_teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
             variadic: None,
             output: ReturnType::Default,
             ..
-        } if params.is_empty() => quote! { #id() },
+        } if params.is_empty() => quote_spanned! { id.span() => #id() },
         sig => syn::Error::new(sig.span(), "Invalid function signature!").to_compile_error(),
     };
     (quote! {
