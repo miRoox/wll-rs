@@ -4,18 +4,24 @@ on: [push, pull_request]
 
 jobs:
   test:
-    name: Rust ${{matrix.rust}}
-    runs-on: ubuntu-latest
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        rust: [nightly, beta, stable]
+        include:
+          - name: macOS
+            os: macos-latest
+          - name: Windows
+            os: windows-latest
+          - name: Ubuntu
+            os: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup rust
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: ${{matrix.rust}}
+          toolchain: nightly
       - name: Build
         run: cargo build --all --verbose
       - name: Test
