@@ -1,5 +1,4 @@
-use wll::errors::{Error, ErrorKind};
-use wll::Result;
+use wll::{Error, ErrorKind, Result};
 use wll_macros::{export, setup, teardown};
 
 #[setup]

@@ -2,8 +2,9 @@ error[E0308]: mismatched types
   --> $DIR/missing-result.rs:10:35
    |
 10 | fn add_two(a: isize, b: isize) -> isize {
-   | ----------                        ^^^^^ expected `isize`, found enum `std::result::Result`
-   | |
+   | ----------------------------------^^^^^
+   | |                                 |
+   | |                                 expected `isize`, found enum `std::result::Result`
    | this expression has type `isize`
    |
    = note: expected type `isize`

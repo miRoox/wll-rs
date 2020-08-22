@@ -1,5 +1,4 @@
-use wll::complex::Complex;
-use wll::Result;
+use wll::{Complex, Result};
 use wll_macros::{export, setup, teardown};
 
 #[setup]
