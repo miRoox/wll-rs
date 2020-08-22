@@ -3,6 +3,7 @@
 use crate::errors::{Error, ErrorKind};
 use crate::Result;
 use std::convert::TryInto;
+use std::num::Wrapping;
 use wll_sys::{mbool, mcomplex, mint, mreal, MArgument};
 
 mod private {
@@ -188,6 +189,31 @@ macro_rules! impl_int_adaptor {
 }
 
 impl_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
+
+macro_rules! impl_wrapping_int_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl InputAdaptor for Wrapping<$t> {
+                type Input = mint;
+
+                #[inline]
+                fn mtype_try_from(input: Self::Input) -> Result<Self> {
+                    Ok(Wrapping(<$t>::mtype_try_from(input)?))
+                }
+            }
+            impl OutputAdaptor for Wrapping<$t> {
+                type Output = mint;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    self.0.try_into_mtype()
+                }
+            }
+        )+
+    };
+}
+
+impl_wrapping_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
 
 macro_rules! impl_real_adaptor {
     ($($t:ty),+) => {
