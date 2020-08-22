@@ -1,11 +1,10 @@
 #![allow(clippy::unit_arg)]
+use wll::{Error, ErrorKind, Result};
 use wll_macros::{setup, teardown};
 
 #[setup]
-fn setup() -> ::wll::Result<()> {
-    Err(wll::errors::Error::from(
-        wll::errors::ErrorKind::FunctionError,
-    ))
+fn setup() -> Result<()> {
+    Err(Error::from(ErrorKind::FunctionError))
 }
 
 #[teardown]

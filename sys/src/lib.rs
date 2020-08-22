@@ -12,7 +12,7 @@
 #![allow(non_snake_case)]
 #![allow(clippy::all)]
 
-pub mod bindings {
+mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 }
 

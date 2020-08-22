@@ -8,8 +8,7 @@ Purpose:
 
 ```rust
 // lib.rs
-use wll::Result;
-use wll::error::{Error, ErrorKind};
+use wll::{Error, ErrorKind, Result};
 
 #[wll::setup]
 fn setup() {}

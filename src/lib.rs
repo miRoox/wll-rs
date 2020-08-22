@@ -15,9 +15,10 @@ pub use errors::{Error, ErrorKind};
 pub use wll_macros::{export, setup, teardown};
 
 pub mod adaptor;
-pub mod complex;
-pub mod errors;
 pub mod global;
 
+mod complex;
+mod errors;
+
 /// A specialized `std::result::Result` type for wll functions.
-pub type Result<T> = std::result::Result<T, errors::Error>;
+pub type Result<T> = std::result::Result<T, Error>;
