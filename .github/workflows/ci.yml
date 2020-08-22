@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Rust ${{matrix.rust}}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        rust: [nightly, beta, stable]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{matrix.rust}}
+      - name: Build
+        run: cargo build --all --verbose
+      - name: Test
+        run: cargo test --all --verbose
