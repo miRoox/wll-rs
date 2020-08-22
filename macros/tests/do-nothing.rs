@@ -1,13 +1,13 @@
 use wll::Result;
-use wll_macros::{wll_export, wll_setup, wll_teardown};
+use wll_macros::{export, setup, teardown};
 
-#[wll_setup]
+#[setup]
 fn setup() {}
 
-#[wll_teardown]
+#[teardown]
 fn teardown() {}
 
-#[wll_export(do_nothing)]
+#[export(do_nothing)]
 fn nothing() -> Result<()> {
     Ok(())
 }

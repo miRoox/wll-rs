@@ -11,20 +11,20 @@ Purpose:
 use wll::Result;
 use wll::error::{Error, ErrorKind};
 
-#[wll_setup]
+#[wll::setup]
 fn setup() {}
 
-#[wll_teardown]
+#[wll::teardown]
 fn teardown() {}
 
 // export function named `wll_add_two`
-#[wll_export]
+#[wll::export]
 fn add_two(a: isize, b: isize)->Result<isize> {
     a.checked_add(b)
      .ok_or_else(|| Error::from(ErrorKind::NumericalError))
 }
 
-#[wll_export(factorial)]
+#[wll::export(factorial)]
 fn fac(n: usize) -> Result<usize> {
     Ok(if n == 0 { 1 } else { n * fac(n - 1)? })
 }

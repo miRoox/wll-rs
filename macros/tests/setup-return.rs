@@ -1,13 +1,13 @@
-use wll_macros::{wll_setup, wll_teardown};
+use wll_macros::{setup, teardown};
 
-#[wll_setup]
+#[setup]
 fn setup() -> ::wll::Result<()> {
     Err(wll::errors::Error::from(
         wll::errors::ErrorKind::FunctionError,
     ))
 }
 
-#[wll_teardown]
+#[teardown]
 fn teardown() {}
 
 fn main() {}
