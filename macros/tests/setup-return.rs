@@ -1,3 +1,4 @@
+#![allow(clippy::unit_arg)]
 use wll_macros::{setup, teardown};
 
 #[setup]

@@ -1,3 +1,4 @@
+#![allow(clippy::unit_arg)]
 use wll::Result;
 use wll_macros::{export, setup, teardown};
 
