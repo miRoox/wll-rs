@@ -150,7 +150,7 @@ impl InputAdaptor for bool {
 
     #[inline]
     fn mtype_try_from(input: Self::Input) -> Result<Self> {
-        Ok(input != wll_sys::FALSE)
+        Ok(input != wll_sys::False)
     }
 }
 
@@ -159,7 +159,7 @@ impl OutputAdaptor for bool {
 
     #[inline]
     fn try_into_mtype(self) -> Result<Self::Output> {
-        Ok(if self { wll_sys::TRUE } else { wll_sys::FALSE })
+        Ok(if self { wll_sys::True } else { wll_sys::False })
     }
 }
 
@@ -247,34 +247,34 @@ mod tests {
 
     #[test]
     fn bool_true_input() {
-        assert_eq!(bool::mtype_try_from(wll_sys::TRUE), Ok(true));
+        assert_eq!(bool::mtype_try_from(wll_sys::True), Ok(true));
     }
 
     #[test]
     fn bool_false_input() {
-        assert_eq!(bool::mtype_try_from(wll_sys::FALSE), Ok(false));
+        assert_eq!(bool::mtype_try_from(wll_sys::False), Ok(false));
     }
 
     #[test]
     fn bool_true_output() {
-        assert_eq!(true.try_into_mtype(), Ok(wll_sys::TRUE));
+        assert_eq!(true.try_into_mtype(), Ok(wll_sys::True));
     }
 
     #[test]
     fn bool_false_output() {
-        assert_eq!(false.try_into_mtype(), Ok(wll_sys::FALSE));
+        assert_eq!(false.try_into_mtype(), Ok(wll_sys::False));
     }
 
     #[test]
     fn bool_true_get() {
-        let mut mb = wll_sys::TRUE;
+        let mut mb = wll_sys::True;
         let arg = MArgument { boolean: &mut mb };
         assert_eq!(bool::try_get_arg(arg), Ok(true));
     }
 
     #[test]
     fn bool_false_get() {
-        let mut mb = wll_sys::FALSE;
+        let mut mb = wll_sys::False;
         let arg = MArgument { boolean: &mut mb };
         assert_eq!(bool::try_get_arg(arg), Ok(false));
     }
@@ -287,7 +287,7 @@ mod tests {
         };
         let res = true.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
-        assert_eq!((mb, res), (wll_sys::TRUE, Ok(())));
+        assert_eq!((mb, res), (wll_sys::True, Ok(())));
     }
 
     #[test]
@@ -298,6 +298,6 @@ mod tests {
         };
         let res = false.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
-        assert_eq!((mb, res), (wll_sys::FALSE, Ok(())));
+        assert_eq!((mb, res), (wll_sys::False, Ok(())));
     }
 }

@@ -12,7 +12,20 @@
 #![allow(non_snake_case)]
 #![allow(clippy::all)]
 
-include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+pub mod bindings {
+    include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+}
 
-pub const TRUE: mbool = True as mbool;
-pub const FALSE: mbool = False as mbool;
+pub use bindings::*;
+
+pub const True: mbool = bindings::True as mbool;
+pub const False: mbool = bindings::False as mbool;
+pub const WolframLibraryVersion: mint = bindings::WolframLibraryVersion as mint;
+pub const LIBRARY_NO_ERROR: errcode_t = bindings::LIBRARY_NO_ERROR as errcode_t;
+pub const LIBRARY_TYPE_ERROR: errcode_t = bindings::LIBRARY_TYPE_ERROR as errcode_t;
+pub const LIBRARY_RANK_ERROR: errcode_t = bindings::LIBRARY_RANK_ERROR as errcode_t;
+pub const LIBRARY_DIMENSION_ERROR: errcode_t = bindings::LIBRARY_DIMENSION_ERROR as errcode_t;
+pub const LIBRARY_NUMERICAL_ERROR: errcode_t = bindings::LIBRARY_NUMERICAL_ERROR as errcode_t;
+pub const LIBRARY_MEMORY_ERROR: errcode_t = bindings::LIBRARY_MEMORY_ERROR as errcode_t;
+pub const LIBRARY_FUNCTION_ERROR: errcode_t = bindings::LIBRARY_FUNCTION_ERROR as errcode_t;
+pub const LIBRARY_VERSION_ERROR: errcode_t = bindings::LIBRARY_VERSION_ERROR as errcode_t;
