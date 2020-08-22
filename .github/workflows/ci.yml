@@ -22,6 +22,10 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: nightly
+      - name: Install LLVM for Windows
+        if: ${{ startsWith(matrix.os, 'windows') }}
+        run: .\.github\workflows\intall-llvm.ps1
+        shell: powershell
       - name: Build
         run: cargo build --all --verbose
       - name: Test
