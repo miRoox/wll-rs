@@ -31,9 +31,10 @@ impl_mtypes!(mbool, mint, mreal, mcomplex);
 /// Typically doesn’t need to be used directly.
 ///
 /// [`MType`]: ./trait.MType.html
-pub trait MTypeOrVoid {}
+pub trait MTypeOrVoid: private::Sealed {}
 
 impl<T: MType> MTypeOrVoid for T {}
+impl private::Sealed for () {}
 impl MTypeOrVoid for () {}
 
 /// Adaptor for [`MType`] input.
