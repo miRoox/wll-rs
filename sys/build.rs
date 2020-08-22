@@ -8,11 +8,7 @@ use std::path::PathBuf;
 fn main() -> Result<(), Box<dyn Error>> {
     let include_path = PathBuf::from("include");
     let wrapper_file = include_path.join("wrapper.h");
-    println!(
-        "cargo:rustc-link-search=native={}",
-        find_wolfram_library_path()?.to_str().unwrap()
-    );
-    println!("cargo:rustc-link-lib=dylib={}", wolfram_library_name());
+    link_libraries()?;
     println!("cargo:rerun-if-changed={}", include_path.to_str().unwrap());
     let bindings = bindgen::Builder::default()
         .header(wrapper_file.to_str().unwrap())
@@ -42,6 +38,18 @@ impl Display for WLError {
 }
 
 impl Error for WLError {}
+
+// TODO: use FindMathematica.cmake ?
+fn link_libraries() -> Result<(), WLError> {
+    if let Ok(_) = env::var("LINK_WOLFRAM") {
+        println!(
+            "cargo:rustc-link-search=native={}",
+            find_wolfram_library_path()?.to_str().unwrap()
+        );
+        println!("cargo:rustc-link-lib=dylib={}", wolfram_library_name());
+    }
+    Ok(())
+}
 
 fn find_wolfram_library_path() -> Result<PathBuf, WLError> {
     if let Some(path) = env::var_os("WOLFRAM_LIB") {
