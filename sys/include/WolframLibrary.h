@@ -62,7 +62,7 @@ typedef struct {mreal ri[2];} mcomplex;
 
 /* Incomplete types */
 
-typedef struct st_MNumericArray *MTensor;
+typedef struct st_MTensor *MTensor;
 
 typedef struct st_MNumericArray *MRawArray;
 
