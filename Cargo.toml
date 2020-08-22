@@ -4,8 +4,11 @@ version = "0.1.0"
 authors = ["miroox <miroox@outlook.com>"]
 edition = "2018"
 license = "MIT"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "A Wolfram LibraryLink interface."
+readme = "README.md"
+repository = "https://github.com/miRoox/wll-rs/"
+categories = ["api-bindings", "development-tools::ffi"]
+keywords = ["wolfram", "mathematica", "ffi", "wrapper"]
 
 [workspace]
 members = [

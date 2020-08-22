@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["miroox <miroox@outlook.com>"]
 edition = "2018"
 license = "MIT"
+description = "Procedural macros for Wolfram LibraryLink interface."
+categories = ["development-tools::ffi"]
+keywords = ["wolfram", "mathematica", "ffi", "macro"]
 
 [lib]
 proc-macro=true
