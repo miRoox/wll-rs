@@ -41,8 +41,15 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: nightly
-      - name: Setup Wolfram Engine
-        run: sudo bash ./.github/workflows/setup-wolframengine.sh
+      - name: Install Wolfram Engine
+        run: |
+          wget https://account.wolfram.com/download/public/wolfram-engine/desktop/LINUX
+          sudo bash LINUX -- -auto -verbose
+          rm LINUX
+      - name: Activate Wolfram Engine
+        run: |
+          /usr/bin/wolframscript -authenticate $WOLFRAM_ID $WOLFRAM_PW
+          /usr/bin/wolframscript -activate
         env:
           WOLFRAM_ID: ${{ secrets.Wolfram_ID }}
           WOLFRAM_PW: ${{ secrets.Wolfram_PW }}
