@@ -3,8 +3,8 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: ${{ matrix.name }}
+  rust-test:
+    name: Run rust tests on ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -30,3 +30,23 @@ jobs:
         run: cargo build --all --verbose
       - name: Test
         run: cargo test --all --verbose
+  wolfram-test:
+    name: Run Wolfram tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+      - name: Setup Wolfram Engine
+        run: ./.github/workflows/setup-wolframengine.sh
+        shell: bash
+      - name: Make and build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
