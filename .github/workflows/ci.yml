@@ -42,8 +42,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Setup Wolfram Engine
-        run: ./.github/workflows/setup-wolframengine.sh
-        shell: bash
+        run: sudo bash ./.github/workflows/setup-wolframengine.sh
       - name: Make and build
         run: |
           mkdir build
