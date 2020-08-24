@@ -4,15 +4,17 @@
 //!
 //! [LibraryLink]: http://reference.wolfram.com/language/LibraryLink/tutorial/Overview.html
 
-#[cfg(not(feature = "no-macros"))]
+#[cfg(feature = "macros")]
 #[no_link]
-pub extern crate wll_macros;
+#[allow(unused_imports)]
+#[macro_use]
+extern crate wll_macros;
 extern crate wll_sys;
 
 pub use complex::Complex;
 pub use errors::{Error, ErrorKind};
-#[cfg(not(feature = "no-macros"))]
-pub use wll_macros::{export, setup, teardown};
+#[cfg(feature = "macros")]
+pub use wll_macros::*;
 
 pub mod adaptor;
 pub mod global;

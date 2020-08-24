@@ -22,8 +22,7 @@ wll-sys = { version = "0.1", path = "../sys" }
 [dev-dependencies.wll]
 version = "0.1"
 path = ".."
-default-features = false
-features = ["no-macros"]
+default-features = true
 
 [dependencies]
 syn = { version = "1.0", features = ["full", "extra-traits"] }
