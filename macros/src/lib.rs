@@ -45,18 +45,18 @@ pub fn setup(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_initialize(
-                data: ::std::option::Option<::wll_sys::WolframLibraryData>
-            ) -> ::wll_sys::errcode_t {
+                data: ::std::option::Option<::wll::sys::WolframLibraryData>
+            ) -> ::wll::sys::errcode_t {
             if let ::std::result::Result::Err(e) = ::wll::global::initialize_lib_data(data) {
                 e.to_raw_error()
             } else {
                 #funcall;
-                ::wll_sys::LIBRARY_NO_ERROR
+                ::wll::sys::LIBRARY_NO_ERROR
             }
         }
         #[no_mangle]
-        pub extern "C" fn WolframLibrary_getVersion() -> ::wll_sys::mint {
-            ::wll_sys::WolframLibraryVersion
+        pub extern "C" fn WolframLibrary_getVersion() -> ::wll::sys::mint {
+            ::wll::sys::WolframLibraryVersion
         }
     })
     .into()
@@ -85,7 +85,7 @@ pub fn teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_uninitialize(
-                _: ::std::option::Option<::wll_sys::WolframLibraryData>
+                _: ::std::option::Option<::wll::sys::WolframLibraryData>
             ) {
                 #funcall;
             }
@@ -136,7 +136,7 @@ pub fn export(args: TokenStream, input: TokenStream) -> TokenStream {
             };
             let setres = quote_spanned! { ty.span() =>
                 match ret.try_set_arg(&res) {
-                    ::std::result::Result::Ok(()) => ::wll_sys::LIBRARY_NO_ERROR,
+                    ::std::result::Result::Ok(()) => ::wll::sys::LIBRARY_NO_ERROR,
                     ::std::result::Result::Err(err) => err.to_raw_error(),
                 }
             };
@@ -152,15 +152,15 @@ pub fn export(args: TokenStream, input: TokenStream) -> TokenStream {
         #input
         #[no_mangle]
         pub unsafe extern "C" fn #exportname(
-            lib_data: ::std::option::Option<::wll_sys::WolframLibraryData>,
-            argc: ::wll_sys::mint,
-            args: *const ::wll_sys::MArgument,
-            res: ::wll_sys::MArgument,
-        ) -> ::wll_sys::errcode_t {
+            lib_data: ::std::option::Option<::wll::sys::WolframLibraryData>,
+            argc: ::wll::sys::mint,
+            args: *const ::wll::sys::MArgument,
+            res: ::wll::sys::MArgument,
+        ) -> ::wll::sys::errcode_t {
             use ::wll::adaptor::{MArgumentGetter, MArgumentSetter};
             let _lib_data = ::wll::global::LibDataLocalizer::new(lib_data);
             if argc != #paramclit {
-                return ::wll_sys::LIBRARY_TYPE_ERROR;
+                return ::wll::sys::LIBRARY_TYPE_ERROR;
             }
             #(let #argvars = #arggets;)*
             let ret = #funcall;

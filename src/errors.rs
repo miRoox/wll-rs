@@ -1,7 +1,7 @@
 //! Wolfram LibraryLink errors.
 
 use std::fmt::{self, Display, Formatter};
-use wll_sys::errcode_t;
+use sys::errcode_t;
 
 /// The error type for Wolfram LibraryLink.
 ///
@@ -42,7 +42,7 @@ impl Error {
     /// Creates a new instance of an `Error` from a raw error code.
     #[inline]
     pub fn from_raw_error(code: errcode_t) -> Option<Self> {
-        if code == wll_sys::LIBRARY_NO_ERROR {
+        if code == sys::LIBRARY_NO_ERROR {
             None
         } else {
             Some(Error(Repr::Raw(code)))
@@ -100,13 +100,13 @@ impl ErrorKind {
     pub(crate) fn to_raw_error(&self) -> errcode_t {
         use ErrorKind::*;
         match *self {
-            TypeError => wll_sys::LIBRARY_TYPE_ERROR,
-            RankError => wll_sys::LIBRARY_RANK_ERROR,
-            DimensionError => wll_sys::LIBRARY_DIMENSION_ERROR,
-            NumericalError => wll_sys::LIBRARY_NUMERICAL_ERROR,
-            MemoryError => wll_sys::LIBRARY_MEMORY_ERROR,
-            FunctionError => wll_sys::LIBRARY_FUNCTION_ERROR,
-            VersionError => wll_sys::LIBRARY_VERSION_ERROR,
+            TypeError => sys::LIBRARY_TYPE_ERROR,
+            RankError => sys::LIBRARY_RANK_ERROR,
+            DimensionError => sys::LIBRARY_DIMENSION_ERROR,
+            NumericalError => sys::LIBRARY_NUMERICAL_ERROR,
+            MemoryError => sys::LIBRARY_MEMORY_ERROR,
+            FunctionError => sys::LIBRARY_FUNCTION_ERROR,
+            VersionError => sys::LIBRARY_VERSION_ERROR,
         }
     }
 
@@ -114,14 +114,14 @@ impl ErrorKind {
     pub(crate) fn from_raw_error(code: errcode_t) -> Option<Self> {
         use ErrorKind::*;
         match code {
-            wll_sys::LIBRARY_NO_ERROR => unreachable!(),
-            wll_sys::LIBRARY_TYPE_ERROR => Some(TypeError),
-            wll_sys::LIBRARY_RANK_ERROR => Some(RankError),
-            wll_sys::LIBRARY_DIMENSION_ERROR => Some(DimensionError),
-            wll_sys::LIBRARY_NUMERICAL_ERROR => Some(NumericalError),
-            wll_sys::LIBRARY_MEMORY_ERROR => Some(MemoryError),
-            wll_sys::LIBRARY_FUNCTION_ERROR => Some(FunctionError),
-            wll_sys::LIBRARY_VERSION_ERROR => Some(VersionError),
+            sys::LIBRARY_NO_ERROR => unreachable!(),
+            sys::LIBRARY_TYPE_ERROR => Some(TypeError),
+            sys::LIBRARY_RANK_ERROR => Some(RankError),
+            sys::LIBRARY_DIMENSION_ERROR => Some(DimensionError),
+            sys::LIBRARY_NUMERICAL_ERROR => Some(NumericalError),
+            sys::LIBRARY_MEMORY_ERROR => Some(MemoryError),
+            sys::LIBRARY_FUNCTION_ERROR => Some(FunctionError),
+            sys::LIBRARY_VERSION_ERROR => Some(VersionError),
             _ => None,
         }
     }

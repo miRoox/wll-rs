@@ -4,7 +4,7 @@ use crate::adaptor::{InputAdaptor, OutputAdaptor};
 use crate::Result;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use std::fmt::Debug;
-use wll_sys::{mcomplex, mreal};
+use sys::{mcomplex, mreal};
 
 /// Generic complex number.
 #[repr(C)]

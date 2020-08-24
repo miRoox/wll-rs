@@ -9,7 +9,8 @@
 #[allow(unused_imports)]
 #[macro_use]
 extern crate wll_macros;
-extern crate wll_sys;
+#[doc(hidden)]
+pub extern crate wll_sys as sys;
 
 pub use complex::Complex;
 pub use errors::{Error, ErrorKind};

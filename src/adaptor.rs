@@ -4,7 +4,7 @@ use crate::errors::{Error, ErrorKind};
 use crate::Result;
 use std::convert::TryInto;
 use std::num::Wrapping;
-use wll_sys::{mbool, mcomplex, mint, mreal, MArgument};
+use sys::{mbool, mcomplex, mint, mreal, MArgument};
 
 mod private {
     pub trait Sealed {}
@@ -150,7 +150,7 @@ impl InputAdaptor for bool {
 
     #[inline]
     fn mtype_try_from(input: Self::Input) -> Result<Self> {
-        Ok(input != wll_sys::False)
+        Ok(input != sys::False)
     }
 }
 
@@ -159,7 +159,7 @@ impl OutputAdaptor for bool {
 
     #[inline]
     fn try_into_mtype(self) -> Result<Self::Output> {
-        Ok(if self { wll_sys::True } else { wll_sys::False })
+        Ok(if self { sys::True } else { sys::False })
     }
 }
 
@@ -243,38 +243,38 @@ impl_real_adaptor!(f32, f64);
 mod tests {
     use super::*;
     use std::mem::MaybeUninit;
-    use wll_sys::{mbool, MArgument};
+    use sys::{mbool, MArgument};
 
     #[test]
     fn bool_true_input() {
-        assert_eq!(bool::mtype_try_from(wll_sys::True), Ok(true));
+        assert_eq!(bool::mtype_try_from(sys::True), Ok(true));
     }
 
     #[test]
     fn bool_false_input() {
-        assert_eq!(bool::mtype_try_from(wll_sys::False), Ok(false));
+        assert_eq!(bool::mtype_try_from(sys::False), Ok(false));
     }
 
     #[test]
     fn bool_true_output() {
-        assert_eq!(true.try_into_mtype(), Ok(wll_sys::True));
+        assert_eq!(true.try_into_mtype(), Ok(sys::True));
     }
 
     #[test]
     fn bool_false_output() {
-        assert_eq!(false.try_into_mtype(), Ok(wll_sys::False));
+        assert_eq!(false.try_into_mtype(), Ok(sys::False));
     }
 
     #[test]
     fn bool_true_get() {
-        let mut mb = wll_sys::True;
+        let mut mb = sys::True;
         let arg = MArgument { boolean: &mut mb };
         assert_eq!(bool::try_get_arg(arg), Ok(true));
     }
 
     #[test]
     fn bool_false_get() {
-        let mut mb = wll_sys::False;
+        let mut mb = sys::False;
         let arg = MArgument { boolean: &mut mb };
         assert_eq!(bool::try_get_arg(arg), Ok(false));
     }
@@ -287,7 +287,7 @@ mod tests {
         };
         let res = true.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
-        assert_eq!((mb, res), (wll_sys::True, Ok(())));
+        assert_eq!((mb, res), (sys::True, Ok(())));
     }
 
     #[test]
@@ -298,6 +298,6 @@ mod tests {
         };
         let res = false.try_set_arg(&arg);
         let mb = unsafe { mb.assume_init() };
-        assert_eq!((mb, res), (wll_sys::False, Ok(())));
+        assert_eq!((mb, res), (sys::False, Ok(())));
     }
 }
