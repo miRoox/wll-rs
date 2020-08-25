@@ -12,7 +12,11 @@ fn add_two(a: isize, b: isize) -> Result<isize> {
         .ok_or_else(|| Error::from(ErrorKind::NumericalError))
 }
 
-#[wll::export(factorial)]
-fn fac(n: usize) -> Result<usize> {
-    Ok(if n == 0 { 1 } else { n * fac(n - 1)? })
+#[wll::export(wfactorial)]
+fn wfac(n: usize) -> Result<usize> {
+    Ok(if n == 0 {
+        1
+    } else {
+        wfac(n - 1)?.wrapping_mul(n)
+    })
 }
