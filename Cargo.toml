@@ -9,6 +9,7 @@ readme = "README.md"
 repository = "https://github.com/miRoox/wll-rs/"
 categories = ["api-bindings", "development-tools::ffi"]
 keywords = ["wolfram", "mathematica", "ffi", "wrapper"]
+exclude = [ "*.nb" ]
 
 [workspace]
 members = [

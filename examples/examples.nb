@@ -1,0 +1,400 @@
+Notebook[
+ {
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        ButtonBox[
+         "wll-rs",
+         BaseStyle -> "Hyperlink",
+         ButtonData -> {URL["https://github.com/miRoox/wll-rs"], None},
+         ButtonNote -> "https://github.com/miRoox/wll-rs"
+        ],
+        " examples"
+       }
+      ],
+      "Title"
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell["Basic examples", "Section"],
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            RowBox[
+             {
+              "lib",
+              "=",
+              RowBox[
+               {
+                "FileNameJoin",
+                "@",
+                RowBox[
+                 {
+                  "{",
+                  RowBox[
+                   {
+                    RowBox[{"NotebookDirectory", "[", "]"}],
+                    ",",
+                    "\"..\"",
+                    ",",
+                    "\"target\"",
+                    ",",
+                    "\"release\"",
+                    ",",
+                    "\"basic\""
+                   }
+                  ],
+                  "}"
+                 }
+                ]
+               }
+              ]
+             }
+            ],
+            ";"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[1]:="
+        ],
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            RowBox[
+             {
+              "add",
+              "=",
+              RowBox[
+               {
+                "LibraryFunctionLoad",
+                "[",
+                RowBox[
+                 {
+                  "lib",
+                  ",",
+                  "\"wll_add_two\"",
+                  ",",
+                  RowBox[{"{", RowBox[{"Integer", ",", "Integer"}], "}"}],
+                  ",",
+                  "Integer"
+                 }
+                ],
+                "]"
+               }
+              ]
+             }
+            ],
+            ";"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[2]:="
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[RowBox[{"add", "[", RowBox[{"1", ",", "2"}], "]"}]],
+            "Input",
+            CellLabel -> "In[3]:="
+           ],
+           Cell[BoxData["3"], "Output", CellLabel -> "Out[3]="]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "add",
+               "[",
+               RowBox[
+                {"1", ",", RowBox[{RowBox[{"2", "^", "63"}], "-", "1"}]}
+               ],
+               "]"
+              }
+             ]
+            ],
+            "Input",
+            CellLabel -> "In[4]:="
+           ],
+           Cell[
+            BoxData[
+             TemplateBox[
+              {
+               "LibraryFunction",
+               "numerr",
+               "\"\:5f53\:8ba1\:7b97\:51fd\:6570 \\!\\(\\*RowBox[{\\\"\\\\\\\"wll_add_two\\\\\\\"\\\"}]\\) \:65f6\:ff0c\:78b0\:5230\:6570\:503c\:9519\:8bef.\"",
+               2,
+               4,
+               1,
+               16580194668087359179,
+               "Local"
+              },
+              "MessageTemplate"
+             ]
+            ],
+            "Message",
+            "MSG",
+            CellLabel -> "\:6b63\:5728\:8ba1\:7b97In[4]:="
+           ],
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "LibraryFunctionError",
+               "[",
+               RowBox[{"\"LIBRARY_NUMERICAL_ERROR\"", ",", "4"}],
+               "]"
+              }
+             ]
+            ],
+            "Output",
+            CellLabel -> "Out[4]="
+           ]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "add",
+               "[",
+               RowBox[
+                {
+                 RowBox[{"-", "1"}],
+                 ",",
+                 RowBox[{"-", RowBox[{"2", "^", "63"}]}]
+                }
+               ],
+               "]"
+              }
+             ]
+            ],
+            "Input",
+            CellLabel -> "In[5]:="
+           ],
+           Cell[
+            BoxData[
+             TemplateBox[
+              {
+               "LibraryFunction",
+               "numerr",
+               "\"\:5f53\:8ba1\:7b97\:51fd\:6570 \\!\\(\\*RowBox[{\\\"\\\\\\\"wll_add_two\\\\\\\"\\\"}]\\) \:65f6\:ff0c\:78b0\:5230\:6570\:503c\:9519\:8bef.\"",
+               2,
+               5,
+               2,
+               16580194668087359179,
+               "Local"
+              },
+              "MessageTemplate"
+             ]
+            ],
+            "Message",
+            "MSG",
+            CellLabel -> "\:6b63\:5728\:8ba1\:7b97In[5]:="
+           ],
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "LibraryFunctionError",
+               "[",
+               RowBox[{"\"LIBRARY_NUMERICAL_ERROR\"", ",", "4"}],
+               "]"
+              }
+             ]
+            ],
+            "Output",
+            CellLabel -> "Out[5]="
+           ]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            RowBox[
+             {
+              "fac",
+              "=",
+              RowBox[
+               {
+                "LibraryFunctionLoad",
+                "[",
+                RowBox[
+                 {
+                  "lib",
+                  ",",
+                  "\"wfactorial\"",
+                  ",",
+                  RowBox[{"{", "Integer", "}"}],
+                  ",",
+                  "Integer"
+                 }
+                ],
+                "]"
+               }
+              ]
+             }
+            ],
+            ";"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[6]:="
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[RowBox[{"fac", "[", RowBox[{"-", "1"}], "]"}]],
+            "Input",
+            CellLabel -> "In[7]:="
+           ],
+           Cell[
+            BoxData[
+             TemplateBox[
+              {
+               "LibraryFunction",
+               "typerr",
+               "\"\:5728\:8ba1\:7b97\:51fd\:6570 \\!\\(\\*RowBox[{\\\"\\\\\\\"wfactorial\\\\\\\"\\\"}]\\) \:7684\:8fc7\:7a0b\:4e2d\:78b0\:5230\:7531\:4e0d\:4e00\:81f4\:7c7b\:578b\:4ea7\:751f\:7684\:9519\:8bef.\"",
+               2,
+               7,
+               3,
+               16580194668087359179,
+               "Local"
+              },
+              "MessageTemplate"
+             ]
+            ],
+            "Message",
+            "MSG",
+            CellLabel -> "\:6b63\:5728\:8ba1\:7b97In[7]:="
+           ],
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "LibraryFunctionError",
+               "[",
+               RowBox[{"\"LIBRARY_TYPE_ERROR\"", ",", "1"}],
+               "]"
+              }
+             ]
+            ],
+            "Output",
+            CellLabel -> "Out[7]="
+           ]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[RowBox[{"fac", "[", "0", "]"}]],
+            "Input",
+            CellLabel -> "In[8]:="
+           ],
+           Cell[BoxData["1"], "Output", CellLabel -> "Out[8]="]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[RowBox[{"fac", "[", "10", "]"}]],
+            "Input",
+            CellLabel -> "In[9]:="
+           ],
+           Cell[BoxData["3628800"], "Output", CellLabel -> "Out[9]="]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         CellGroupData[
+          {
+           Cell[
+            BoxData[RowBox[{"fac", "[", "21", "]"}]],
+            "Input",
+            CellLabel -> "In[10]:="
+           ],
+           Cell[
+            BoxData[
+             TemplateBox[
+              {
+               "LibraryFunction",
+               "typerr",
+               "\"\:5728\:8ba1\:7b97\:51fd\:6570 \\!\\(\\*RowBox[{\\\"\\\\\\\"wfactorial\\\\\\\"\\\"}]\\) \:7684\:8fc7\:7a0b\:4e2d\:78b0\:5230\:7531\:4e0d\:4e00\:81f4\:7c7b\:578b\:4ea7\:751f\:7684\:9519\:8bef.\"",
+               2,
+               10,
+               4,
+               16580194668087359179,
+               "Local"
+              },
+              "MessageTemplate"
+             ]
+            ],
+            "Message",
+            "MSG",
+            CellLabel -> "\:6b63\:5728\:8ba1\:7b97In[10]:="
+           ],
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               "LibraryFunctionError",
+               "[",
+               RowBox[{"\"LIBRARY_TYPE_ERROR\"", ",", "1"}],
+               "]"
+              }
+             ]
+            ],
+            "Output",
+            CellLabel -> "Out[10]="
+           ]
+          },
+          Open
+         ]
+        ],
+        Cell[
+         BoxData[RowBox[{"LibraryUnload", "[", "lib", "]"}]],
+         "Input",
+         CellLabel -> "In[11]:="
+        ]
+       },
+       Open
+      ]
+     ]
+    },
+    Open
+   ]
+  ]
+ },
+ StyleDefinitions -> "Default.nb"
+]
