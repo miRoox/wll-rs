@@ -1,6 +1,6 @@
 //! Some tools to access the global status.
 
-use crate::errors::{Error, ErrorKind};
+use crate::errors::Error;
 use std::mem;
 
 // should be thread local?
@@ -10,9 +10,6 @@ pub(crate) static mut CURRENT_LIB_DATA: Option<sys::WolframLibraryData> = None;
 #[inline]
 pub fn initialize_lib_data(lib_data: Option<sys::WolframLibraryData>) -> Result<(), Error> {
     unsafe {
-        if lib_data.is_none() || CURRENT_LIB_DATA.is_some() {
-            return Err(Error::from(ErrorKind::FunctionError));
-        }
         CURRENT_LIB_DATA = lib_data;
     }
     Ok(())
