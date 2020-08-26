@@ -1,22 +1,28 @@
 //! Some tools to access the global status.
 
-use crate::errors::Error;
-use std::cell::RefCell;
+use crate::{Error, ErrorKind};
 use std::ptr;
+use std::sync::atomic::{AtomicPtr, Ordering};
 
-static CURRENT_LIB_DATA: RefCell<sys::WolframLibraryData> = RefCell::new(ptr::null_mut());
+static CURRENT_LIB_DATA: AtomicPtr<sys::st_WolframLibraryData> = AtomicPtr::new(ptr::null_mut());
 
 /// initialize global `WolframLibraryData`.
 #[inline]
 pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<(), Error> {
-    CURRENT_LIB_DATA.replace(lib_data);
+    if lib_data.is_null() {
+        return Err(Error::from(ErrorKind::FunctionError));
+    }
+    CURRENT_LIB_DATA.store(lib_data, Ordering::Relaxed);
     Ok(())
 }
 
-/// get current `WolframLibraryData`.
+/// Work with current `WolframLibraryData`.
 #[inline]
-pub fn get_lib_data() -> sys::WolframLibraryData {
-    *CURRENT_LIB_DATA.borrow()
+pub fn with_lib_data<F, R>(f: F) -> R
+where
+    F: FnOnce(sys::WolframLibraryData) -> R,
+{
+    f(CURRENT_LIB_DATA.load(Ordering::Relaxed))
 }
 
 /// RAII wrapper to set current `WolframLibraryData` locally.
@@ -29,7 +35,7 @@ impl LibDataLocalizer {
     #[inline]
     pub fn new(new: sys::WolframLibraryData) -> Self {
         LibDataLocalizer {
-            old: CURRENT_LIB_DATA.replace(new),
+            old: CURRENT_LIB_DATA.swap(new, Ordering::Release),
         }
     }
 }
@@ -37,6 +43,6 @@ impl LibDataLocalizer {
 impl Drop for LibDataLocalizer {
     #[inline]
     fn drop(&mut self) {
-        CURRENT_LIB_DATA.replace(self.old);
+        CURRENT_LIB_DATA.swap(self.old, Ordering::Release);
     }
 }
