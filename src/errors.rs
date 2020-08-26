@@ -19,7 +19,7 @@ enum Repr {
 ///
 /// It is used with the [`Error`] type.
 ///
-/// [`Error`]: ../struct.Error.html
+/// [`Error`]: ./struct.Error.html
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum ErrorKind {
     /// Unexpected type encountered.
@@ -60,7 +60,7 @@ impl Error {
 
     /// Returns the corresponding [`ErrorKind`] for this error (if any).
     ///
-    /// [`ErrorKind`]: ../enum.ErrorKind.html
+    /// [`ErrorKind`]: ./enum.ErrorKind.html
     #[inline]
     pub fn kind(&self) -> Option<ErrorKind> {
         match self.0 {
