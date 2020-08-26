@@ -3,21 +3,19 @@
 use crate::errors::Error;
 use std::cell::RefCell;
 
-thread_local!(
-    static CURRENT_LIB_DATA: RefCell<Option<sys::WolframLibraryData>> = RefCell::new(None);
-);
+static CURRENT_LIB_DATA: RefCell<Option<sys::WolframLibraryData>> = RefCell::new(None);
 
 /// initialize global `WolframLibraryData`.
 #[inline]
 pub fn initialize_lib_data(lib_data: Option<sys::WolframLibraryData>) -> Result<(), Error> {
-    CURRENT_LIB_DATA.with(|data| data.replace(lib_data));
+    CURRENT_LIB_DATA.replace(lib_data);
     Ok(())
 }
 
 /// get current `WolframLibraryData`.
 #[inline]
 pub fn get_lib_data() -> Option<sys::WolframLibraryData> {
-    CURRENT_LIB_DATA.with(|data| *data.borrow())
+    *CURRENT_LIB_DATA.borrow()
 }
 
 /// RAII wrapper to set current `WolframLibraryData` locally.
@@ -30,7 +28,7 @@ impl LibDataLocalizer {
     #[inline]
     pub fn new(new: Option<sys::WolframLibraryData>) -> Self {
         LibDataLocalizer {
-            old: CURRENT_LIB_DATA.with(|data| data.replace(new)),
+            old: CURRENT_LIB_DATA.replace(new),
         }
     }
 }
@@ -38,6 +36,6 @@ impl LibDataLocalizer {
 impl Drop for LibDataLocalizer {
     #[inline]
     fn drop(&mut self) {
-        CURRENT_LIB_DATA.with(|data| data.replace(self.old));
+        CURRENT_LIB_DATA.replace(self.old);
     }
 }
