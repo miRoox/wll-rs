@@ -99,7 +99,7 @@ impl MArgumentSetter<()> for () {
 }
 
 macro_rules! impl_argument_getter {
-    ($t:ty, $fd:ident) => {
+    ($fd:ident: $t:ty) => {
         impl<T: InputAdaptor<Input = $t>> MArgumentGetter<$t> for T {
             #[inline]
             fn try_get_arg(arg: MArgument) -> Result<Self> {
@@ -116,7 +116,7 @@ macro_rules! impl_argument_getter {
 }
 
 macro_rules! impl_argument_setter {
-    ($t:ty, $fd:ident) => {
+    ($fd:ident: $t:ty) => {
         impl<T: OutputAdaptor<Output = $t>> MArgumentSetter<$t> for T {
             #[inline]
             fn try_set_arg(self, arg: &MArgument) -> Result<()> {
@@ -134,16 +134,20 @@ macro_rules! impl_argument_setter {
 }
 
 macro_rules! impl_argument_getter_setter {
-    ($t:ty, $fd:ident) => {
-        impl_argument_getter!($t, $fd);
-        impl_argument_setter!($t, $fd);
+    {$($fd:ident: $t:ty,)*} => {
+        $(
+            impl_argument_getter!($fd: $t);
+            impl_argument_setter!($fd: $t);
+        )*
     };
 }
 
-impl_argument_getter_setter!(mbool, boolean);
-impl_argument_getter_setter!(mint, integer);
-impl_argument_getter_setter!(mreal, real);
-impl_argument_getter_setter!(mcomplex, cmplex);
+impl_argument_getter_setter! {
+    boolean: mbool,
+    integer: mint,
+    real: mreal,
+    cmplex: mcomplex,
+}
 
 impl InputAdaptor for bool {
     type Input = mbool;
