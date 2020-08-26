@@ -45,7 +45,7 @@ pub fn setup(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_initialize(
-                data: ::std::option::Option<::wll::sys::WolframLibraryData>
+                data: ::wll::sys::WolframLibraryData
             ) -> ::wll::sys::errcode_t {
             if let ::std::result::Result::Err(e) = ::wll::global::initialize_lib_data(data) {
                 e.to_raw_error()
@@ -85,7 +85,7 @@ pub fn teardown(_args: TokenStream, input: TokenStream) -> TokenStream {
         #ast
         #[no_mangle]
         pub extern "C" fn WolframLibrary_uninitialize(
-                _: ::std::option::Option<::wll::sys::WolframLibraryData>
+                _: ::wll::sys::WolframLibraryData
             ) {
                 #funcall;
             }
@@ -152,7 +152,7 @@ pub fn export(args: TokenStream, input: TokenStream) -> TokenStream {
         #input
         #[no_mangle]
         pub unsafe extern "C" fn #exportname(
-            lib_data: ::std::option::Option<::wll::sys::WolframLibraryData>,
+            lib_data: :::wll::sys::WolframLibraryData,
             argc: ::wll::sys::mint,
             args: *const ::wll::sys::MArgument,
             res: ::wll::sys::MArgument,
