@@ -4,7 +4,7 @@ use crate::errors::{Error, ErrorKind};
 use crate::Result;
 use std::convert::TryInto;
 use std::num::Wrapping;
-use sys::{mbool, mcomplex, mint, mreal, MArgument};
+use sys::{mbool, mcomplex, mint, mreal, MArgument, MImage, MNumericArray, MSparseArray, MTensor};
 
 mod private {
     pub trait Sealed {}
@@ -25,7 +25,16 @@ macro_rules! impl_mtypes {
     };
 }
 
-impl_mtypes!(mbool, mint, mreal, mcomplex);
+impl_mtypes!(
+    mbool,
+    mint,
+    mreal,
+    mcomplex,
+    MTensor,
+    MSparseArray,
+    MNumericArray,
+    MImage
+);
 
 /// [`MType`] or `()`.
 /// Typically doesn’t need to be used directly.
@@ -147,6 +156,10 @@ impl_argument_getter_setter! {
     integer: mint,
     real: mreal,
     cmplex: mcomplex,
+    tensor: MTensor,
+    sparse: MSparseArray,
+    numeric: MNumericArray,
+    image: MImage,
 }
 
 impl InputAdaptor for bool {
