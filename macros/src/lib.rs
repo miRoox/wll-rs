@@ -152,7 +152,7 @@ pub fn export(args: TokenStream, input: TokenStream) -> TokenStream {
         #input
         #[no_mangle]
         pub unsafe extern "C" fn #exportname(
-            lib_data: :::wll::sys::WolframLibraryData,
+            lib_data: ::wll::sys::WolframLibraryData,
             argc: ::wll::sys::mint,
             args: *const ::wll::sys::MArgument,
             res: ::wll::sys::MArgument,
