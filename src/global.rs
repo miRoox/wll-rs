@@ -1,14 +1,15 @@
 //! Some tools to access the global status.
 
-use crate::{Error, ErrorKind};
+use crate::{Error, ErrorKind, Result};
 use std::ptr;
+use std::ptr::NonNull;
 use std::sync::atomic::{AtomicPtr, Ordering};
 
 static CURRENT_LIB_DATA: AtomicPtr<sys::st_WolframLibraryData> = AtomicPtr::new(ptr::null_mut());
 
 /// initialize global `WolframLibraryData`.
 #[inline]
-pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<(), Error> {
+pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
     if lib_data.is_null() {
         return Err(Error::from(ErrorKind::FunctionError));
     }
@@ -18,11 +19,15 @@ pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<(), Erro
 
 /// Work with current `WolframLibraryData`.
 #[inline]
-pub fn with_lib_data<F, R>(f: F) -> R
+pub fn with_lib_data<F, R>(f: F) -> Result<R>
 where
-    F: FnOnce(sys::WolframLibraryData) -> R,
+    F: FnOnce(NonNull<sys::st_WolframLibraryData>) -> Result<R>,
 {
-    f(CURRENT_LIB_DATA.load(Ordering::Relaxed))
+    if let Some(data) = NonNull::new(CURRENT_LIB_DATA.load(Ordering::Relaxed)) {
+        f(data)
+    } else {
+        Err(Error::from(ErrorKind::FunctionError))
+    }
 }
 
 /// RAII wrapper to set current `WolframLibraryData` locally.
