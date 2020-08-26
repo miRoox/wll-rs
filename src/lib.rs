@@ -38,3 +38,15 @@ pub fn message(msg: &'static str) -> Result<()> {
         Err(Error::from(ErrorKind::FunctionError))
     })
 }
+
+/// Checks if the Wolfram Language is in the process of an abort.
+///
+/// **see also**: [AbortQ](http://reference.wolfram.com/language/LibraryLink/ref/callback/AbortQ.html)
+pub fn is_abort() -> Result<bool> {
+    global::with_lib_data(|data| unsafe {
+        if let Some(func) = (*data.as_ptr()).AbortQ {
+            return Ok(func() != 0);
+        }
+        Err(Error::from(ErrorKind::FunctionError))
+    })
+}
