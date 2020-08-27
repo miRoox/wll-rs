@@ -19,6 +19,6 @@ endif()
 add_custom_target(
     wll_rs
     ALL
-    COMMAND cargo build --all
+    COMMAND cargo build --all --features "auto-link macros"
     WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 )
