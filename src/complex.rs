@@ -19,7 +19,7 @@ pub struct Complex<T> {
 impl<T> Complex<T> {
     /// Construct a new complex number.
     #[inline]
-    pub fn new(re: T, im: T) -> Self {
+    pub const fn new(re: T, im: T) -> Self {
         Complex { re, im }
     }
 }
