@@ -36,10 +36,8 @@ impl_mtypes!(
     MImage
 );
 
-/// [`MType`] or `()`.
-/// Typically doesn’t need to be used directly.
-///
-/// [`MType`]: ./trait.MType.html
+// `MType` or `()`.
+#[doc(hidden)]
 pub trait MTypeOrVoid: private::Sealed {}
 
 impl<T: MType> MTypeOrVoid for T {}
@@ -48,10 +46,7 @@ impl MTypeOrVoid for () {}
 
 /// Adaptor for [`MType`] input.
 ///
-/// `InputAdaptor for T` with `type Input = U` implies [`MArgumentGetter`]`<U> for T`
-///
 /// [`MType`]: ./trait.MType.html
-/// [`MArgumentGetter`]: ./trait.MArgumentGetter.html
 pub trait InputAdaptor: Sized {
     /// Input type.
     type Input: MType;
@@ -62,10 +57,7 @@ pub trait InputAdaptor: Sized {
 
 /// Adaptor for [`MType`] output.
 ///
-/// `OutputAdaptor for T` with `type Input = U` implies [`MArgumentSetter`]`<U> for T`
-///
 /// [`MType`]: ./trait.MType.html
-/// [`MArgumentSetter`]: ./trait.MArgumentSetter.html
 pub trait OutputAdaptor: Sized {
     /// Output type.
     type Output: MType;
@@ -74,27 +66,25 @@ pub trait OutputAdaptor: Sized {
     fn try_into_mtype(self) -> Result<Self::Output>;
 }
 
-/// Adaptor trait for getting `MArgument`.
-/// Typically doesn’t need to be used directly.
-///
-/// `MArgumentGetter<T>` will be implemented automatically if proper [`InputAdaptor`] has been implemented.
-///
-/// **DO NOT** implement this trait yourself.
-///
-/// [`InputAdaptor`]: ./trait.InputAdaptor.html
+// Adaptor trait for getting `MArgument`.
+// Typically doesn’t need to be used directly.
+//
+// `MArgumentGetter<T>` will be implemented automatically if proper `InputAdaptor` has been implemented.
+//
+// **DO NOT** implement this trait yourself.
+#[doc(hidden)]
 pub trait MArgumentGetter<T: MType>: Sized {
     /// Try to get `MArgument`.
     fn try_get_arg(arg: MArgument) -> Result<Self>;
 }
 
-/// Adaptor trait for setting `MArgument`.
-/// Typically doesn’t need to be used directly.
-///
-/// `MArgumentSetter<T>` will be implemented automatically if proper [`OutputAdaptor`] has been implemented.
-///
-/// **DO NOT** implement this trait yourself.
-///
-/// [`OutputAdaptor`]: ./trait.OutputAdaptor.html
+// Adaptor trait for setting `MArgument`.
+// Typically doesn’t need to be used directly.
+//
+// `MArgumentSetter<T>` will be implemented automatically if proper `OutputAdaptor` has been implemented.
+//
+// **DO NOT** implement this trait yourself.
+#[doc(hidden)]
 pub trait MArgumentSetter<T: MTypeOrVoid>: Sized {
     /// Try to set `MArgument`.
     fn try_set_arg(self, arg: &MArgument) -> Result<()>;

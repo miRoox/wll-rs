@@ -1,5 +1,4 @@
-//! Some tools to access the global status.
-//! Typically doesn’t need to be used directly.
+// Some internal tools to access the global status.
 
 use crate::{Error, ErrorKind, Result};
 use std::ptr;
@@ -8,8 +7,7 @@ use std::sync::atomic::{AtomicPtr, Ordering};
 
 static CURRENT_LIB_DATA: AtomicPtr<sys::st_WolframLibraryData> = AtomicPtr::new(ptr::null_mut());
 
-/// Initialize global `WolframLibraryData`.
-/// Typically doesn’t need to be used directly.
+// Initialize global `WolframLibraryData`.
 #[inline]
 pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
     if lib_data.is_null() {
@@ -19,8 +17,7 @@ pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
     Ok(())
 }
 
-/// Work with current `WolframLibraryData`.
-/// Typically doesn’t need to be used directly.
+// Work with current `WolframLibraryData`.
 #[inline]
 pub fn with_lib_data<F, R>(f: F) -> Result<R>
 where
@@ -33,14 +30,13 @@ where
     }
 }
 
-/// RAII wrapper to set current `WolframLibraryData` locally.
-/// Typically doesn’t need to be used directly.
+// RAII wrapper to set current `WolframLibraryData` locally.
 pub struct LibDataLocalizer {
     old: sys::WolframLibraryData,
 }
 
 impl LibDataLocalizer {
-    /// set current `WolframLibraryData` locally.
+    // Set current `WolframLibraryData` locally.
     #[inline]
     pub fn new(new: sys::WolframLibraryData) -> Self {
         LibDataLocalizer {
@@ -50,6 +46,7 @@ impl LibDataLocalizer {
 }
 
 impl Drop for LibDataLocalizer {
+    // Restore current `WolframLibraryData`.
     #[inline]
     fn drop(&mut self) {
         CURRENT_LIB_DATA.swap(self.old, Ordering::Release);

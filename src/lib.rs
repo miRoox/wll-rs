@@ -21,6 +21,7 @@ pub use errors::{Error, ErrorKind};
 pub use wll_macros::*;
 
 pub mod adaptor;
+#[doc(hidden)]
 pub mod global;
 
 mod complex;
