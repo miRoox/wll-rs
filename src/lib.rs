@@ -29,24 +29,26 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// Issues a message from a library function.
 ///
 /// **see also**: [Message](http://reference.wolfram.com/language/LibraryLink/ref/callback/Message.html)
+#[inline]
 pub fn message(msg: &'static str) -> Result<()> {
     global::with_lib_data(|data| unsafe {
-        if let Some(func) = (*data.as_ptr()).Message {
-            func(msg.as_ptr() as *const ::std::os::raw::c_char);
-            return Ok(());
-        }
-        Err(Error::from(ErrorKind::FunctionError))
+        let func = (*data.as_ptr())
+            .Message
+            .unwrap_or_else(|| std::hint::unreachable_unchecked());
+        func(msg.as_ptr() as *const ::std::os::raw::c_char);
+        Ok(())
     })
 }
 
 /// Checks if the Wolfram Language is in the process of an abort.
 ///
 /// **see also**: [AbortQ](http://reference.wolfram.com/language/LibraryLink/ref/callback/AbortQ.html)
+#[inline]
 pub fn is_abort() -> Result<bool> {
     global::with_lib_data(|data| unsafe {
-        if let Some(func) = (*data.as_ptr()).AbortQ {
-            return Ok(func() != 0);
-        }
-        Err(Error::from(ErrorKind::FunctionError))
+        Ok((*data.as_ptr())
+            .AbortQ
+            .unwrap_or_else(|| std::hint::unreachable_unchecked())()
+            != 0)
     })
 }
