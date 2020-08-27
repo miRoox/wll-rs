@@ -8,5 +8,8 @@ publish = false
 [lib]
 crate-type = [ "cdylib" ]
 
+[features]
+auto-link = ["wll/auto-link"]
+
 [dependencies]
 wll = { path = "../..", features = ["macros"] }

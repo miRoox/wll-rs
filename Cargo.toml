@@ -12,7 +12,7 @@ keywords = ["wolfram", "mathematica", "librarylink", "ffi", "wrapper"]
 exclude = [ "*.nb" ]
 
 [package.metadata.docs.rs]
-all-features = true
+features = ["macros"]
 rustdoc-args = ["--cfg", "docsrs"]
 
 [workspace]
@@ -25,6 +25,7 @@ members = [
 [features]
 default = []
 macros = ["wll-macros"]
+auto-link = ["wll-sys/auto-link"]
 
 [dependencies]
 wll-sys = { version = "0.1", path = "sys" }

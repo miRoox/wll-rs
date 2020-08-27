@@ -9,5 +9,8 @@ repository = "https://github.com/miRoox/wll-rs/"
 categories = ["external-ffi-bindings", "development-tools::ffi"]
 keywords = ["wolfram", "mathematica", "librarylink", "ffi", "bindings"]
 
+[features]
+auto-link = []
+
 [build-dependencies]
 bindgen = "0.54"
