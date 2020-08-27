@@ -5,6 +5,7 @@ authors = ["miroox <miroox@outlook.com>"]
 edition = "2018"
 license = "MIT"
 description = "A low-level bindings for Wolfram LibraryLink."
+repository = "https://github.com/miRoox/wll-rs/"
 categories = ["external-ffi-bindings", "development-tools::ffi"]
 keywords = ["wolfram", "mathematica", "librarylink", "ffi", "bindings"]
 
