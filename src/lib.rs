@@ -1,6 +1,8 @@
-//! # wll
-//!
 //! Wolfram [LibraryLink] interface for Rust.
+//!
+//! # Examples
+//!
+//! Examples can found in the examples directory of the source code, or on [GitHub](https://github.com/miRoox/wll-rs/tree/master/examples).
 //!
 //! [LibraryLink]: http://reference.wolfram.com/language/LibraryLink/tutorial/Overview.html
 

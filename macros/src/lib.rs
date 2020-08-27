@@ -1,5 +1,3 @@
-//! # wll-macros
-//!
 //! Procedural macros for `wll`.
 
 extern crate proc_macro;

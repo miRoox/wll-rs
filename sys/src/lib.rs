@@ -1,5 +1,3 @@
-//! # wll-sys
-//!
 //! `wll-sys` is a low-level bindings for Wolfram LibraryLink.
 //! Typically doesn’t need to be used directly.
 //!

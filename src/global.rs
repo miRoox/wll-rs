@@ -1,4 +1,5 @@
 //! Some tools to access the global status.
+//! Typically doesn’t need to be used directly.
 
 use crate::{Error, ErrorKind, Result};
 use std::ptr;
@@ -7,7 +8,8 @@ use std::sync::atomic::{AtomicPtr, Ordering};
 
 static CURRENT_LIB_DATA: AtomicPtr<sys::st_WolframLibraryData> = AtomicPtr::new(ptr::null_mut());
 
-/// initialize global `WolframLibraryData`.
+/// Initialize global `WolframLibraryData`.
+/// Typically doesn’t need to be used directly.
 #[inline]
 pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
     if lib_data.is_null() {
@@ -18,6 +20,7 @@ pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
 }
 
 /// Work with current `WolframLibraryData`.
+/// Typically doesn’t need to be used directly.
 #[inline]
 pub fn with_lib_data<F, R>(f: F) -> Result<R>
 where
@@ -31,6 +34,7 @@ where
 }
 
 /// RAII wrapper to set current `WolframLibraryData` locally.
+/// Typically doesn’t need to be used directly.
 pub struct LibDataLocalizer {
     old: sys::WolframLibraryData,
 }
