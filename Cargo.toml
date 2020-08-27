@@ -11,6 +11,10 @@ categories = ["api-bindings", "development-tools::ffi"]
 keywords = ["wolfram", "mathematica", "ffi", "wrapper"]
 exclude = [ "*.nb" ]
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
 [workspace]
 members = [
     "sys",

@@ -15,6 +15,7 @@ pub extern crate wll_sys as sys;
 pub use complex::Complex;
 pub use errors::{Error, ErrorKind};
 #[cfg(feature = "macros")]
+#[cfg_attr(docsrs, doc(cfg(feature = "macros")))]
 pub use wll_macros::*;
 
 pub mod adaptor;
