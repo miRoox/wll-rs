@@ -53,9 +53,5 @@ jobs:
         env:
           WOLFRAM_ID: ${{ secrets.Wolfram_ID }}
           WOLFRAM_PW: ${{ secrets.Wolfram_PW }}
-      - name: Make and build
-        run: |
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build .
+      - name: Build with link
+        run: cargo build --all --features "auto-link macros"
