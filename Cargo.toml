@@ -8,7 +8,7 @@ description = "A Wolfram LibraryLink interface."
 readme = "README.md"
 repository = "https://github.com/miRoox/wll-rs/"
 categories = ["api-bindings", "development-tools::ffi"]
-keywords = ["wolfram", "mathematica", "ffi", "wrapper"]
+keywords = ["wolfram", "mathematica", "librarylink", "ffi", "wrapper"]
 exclude = [ "*.nb" ]
 
 [package.metadata.docs.rs]

@@ -6,7 +6,7 @@ edition = "2018"
 license = "MIT"
 description = "Procedural macros for Wolfram LibraryLink interface."
 categories = ["development-tools::ffi"]
-keywords = ["wolfram", "mathematica", "ffi", "macro"]
+keywords = ["wolfram", "mathematica", "librarylink", "ffi", "macro"]
 
 [lib]
 proc-macro=true

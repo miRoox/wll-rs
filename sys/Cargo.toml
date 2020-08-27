@@ -6,7 +6,7 @@ edition = "2018"
 license = "MIT"
 description = "A low-level bindings for Wolfram LibraryLink."
 categories = ["external-ffi-bindings", "development-tools::ffi"]
-keywords = ["wolfram", "mathematica", "ffi", "bindings"]
+keywords = ["wolfram", "mathematica", "librarylink", "ffi", "bindings"]
 
 [build-dependencies]
 bindgen = "0.54"
