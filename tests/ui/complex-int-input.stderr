@@ -1,0 +1,5 @@
+error[E0599]: no function or associated item named `try_get_arg` found for struct `wll::Complex<i64>` in the current scope
+  --> $DIR/complex-int-input.rs:10:13
+   |
+10 | fn cconj(z: Complex<i64>) -> Result<Complex<i64>> {
+   |             ^^^^^^^^^^^^ function or associated item not found in `wll::Complex<i64>`

@@ -1,0 +1,9 @@
+error[E0428]: the name `add_two` is defined multiple times
+  --> $DIR/conflict-name.rs:10:1
+   |
+9  | #[wll::export(add_two)]
+   | ----------------------- previous definition of the value `add_two` here
+10 | fn add_two(a: isize, b: isize) -> Result<isize> {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `add_two` redefined here
+   |
+   = note: `add_two` must be defined only once in the value namespace of this module
