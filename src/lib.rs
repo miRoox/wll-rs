@@ -6,6 +6,8 @@
 //!
 //! [LibraryLink]: http://reference.wolfram.com/language/LibraryLink/tutorial/Overview.html
 
+#![feature(doc_cfg)]
+
 #[cfg(feature = "macros")]
 #[no_link]
 #[allow(unused_imports)]
