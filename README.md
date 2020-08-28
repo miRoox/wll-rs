@@ -1,7 +1,7 @@
 # wll-rs
 
-[![crates.io](https://img.shields.io/crates/v/wll-rs.svg)](https://crates.io/crates/wll-rs)
-[![doc.rs](https://docs.rs/wll-rs/badge.svg)](https://docs.rs/wll-rs)
+[![crates.io](https://img.shields.io/crates/v/wll.svg)](https://crates.io/crates/wll)
+[![doc.rs](https://docs.rs/wll/badge.svg)](https://docs.rs/wll)
 [![CI](https://github.com/miRoox/wll-rs/workflows/CI/badge.svg)](https://github.com/miRoox/wll-rs/actions?query=workflow%3ACI)
 
 Wolfram [LibraryLink](http://reference.wolfram.com/language/LibraryLink/tutorial/Overview.html) interface for Rust
