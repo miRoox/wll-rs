@@ -1,13 +1,12 @@
 use wll::{Complex, Result};
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export(conj)]
+#[wll::export(conj)]
 fn cconj(z: Complex<i64>) -> Result<Complex<i64>> {
     Ok(z.conj())
 }

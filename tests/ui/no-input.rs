@@ -1,14 +1,13 @@
 use std::mem;
 use wll::Result;
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export(size_bytes)]
+#[wll::export(size_bytes)]
 fn size() -> Result<usize> {
     Ok(mem::size_of::<usize>())
 }

@@ -1,13 +1,12 @@
 use wll::{Error, ErrorKind, Result};
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export]
+#[wll::export(add_two)]
 fn add_two(a: isize, b: isize) -> Result<isize> {
     a.checked_add(b)
         .ok_or_else(|| Error::from(ErrorKind::NumericalError))

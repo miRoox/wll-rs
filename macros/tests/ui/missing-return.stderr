@@ -1,5 +1,0 @@
-error: invalid function signature!
-  --> $DIR/missing-return.rs:10:1
-   |
-10 | fn nothing() {}
-   | ^^^^^^^^^^^^

@@ -1,14 +1,13 @@
 #![allow(clippy::unit_arg)]
 use wll::Result;
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export(do_nothing)]
+#[wll::export(do_nothing)]
 fn nothing() -> Result<()> {
     Ok(())
 }

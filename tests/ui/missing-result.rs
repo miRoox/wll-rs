@@ -1,12 +1,10 @@
-use wll_macros::{export, setup, teardown};
-
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export]
+#[wll::export]
 fn add_two(a: isize, b: isize) -> isize {
     a + b
 }

@@ -1,13 +1,12 @@
 use wll::Result;
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export(factorial)]
+#[wll::export(factorial)]
 fn fac(n: usize) -> Result<usize> {
     Ok(if n == 0 { 1 } else { n * fac(n - 1)? })
 }

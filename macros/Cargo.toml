@@ -12,14 +12,6 @@ keywords = ["wolfram", "mathematica", "librarylink", "ffi", "macro"]
 [lib]
 proc-macro=true
 
-[[test]]
-name = "tests"
-path = "tests/run-tests.rs"
-
-[dev-dependencies]
-trybuild = { version = "1.0", features = ["diff"] }
-wll = { version = "0.1", path = ".." }
-
 [dependencies]
 syn = { version = "1.0", features = ["full", "extra-traits"] }
 quote = "1.0"

@@ -1,4 +1,5 @@
 #[test]
+#[cfg_attr(not(feature = "macros"), ignore)]
 fn tests() {
     let t = trybuild::TestCases::new();
     t.pass("tests/ui/empty-setup.rs");

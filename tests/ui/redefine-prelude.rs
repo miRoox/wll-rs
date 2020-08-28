@@ -1,10 +1,9 @@
 #![allow(dead_code)]
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
 type Result = ();
@@ -15,7 +14,7 @@ type MArgument = ();
 type MType = ();
 type MArgumentGetter = ();
 
-#[export(factorial)]
+#[wll::export(factorial)]
 fn fac(n: usize) -> wll::Result<usize> {
     Ok(if n == 0 { 1 } else { n * fac(n - 1)? })
 }

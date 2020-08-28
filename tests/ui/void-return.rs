@@ -1,14 +1,13 @@
 #![allow(clippy::unit_arg)]
 use wll::Result;
-use wll_macros::{export, setup, teardown};
 
-#[setup]
+#[wll::setup]
 fn setup() {}
 
-#[teardown]
+#[wll::teardown]
 fn teardown() {}
 
-#[export]
+#[wll::export]
 fn print(n: usize) -> Result<()> {
     eprintln!("Input: {}", n);
     Ok(())
