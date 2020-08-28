@@ -1,3 +1,3 @@
 [submodule "FindMathematica"]
-	path = FindMathematica
+	path = sys/FindMathematica
 	url = https://github.com/sakra/FindMathematica.git
