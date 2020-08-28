@@ -27,9 +27,9 @@ jobs:
         run: .\.github\workflows\intall-llvm.ps1
         shell: powershell
       - name: Build
-        run: cargo build --all --verbose
+        run: cargo build --workspace --verbose
       - name: Test
-        run: cargo test --all --verbose
+        run: cargo test --workspace --verbose
   wolfram-test:
     name: Run Wolfram tests
     runs-on: ubuntu-latest
@@ -54,4 +54,4 @@ jobs:
           WOLFRAM_ID: ${{ secrets.Wolfram_ID }}
           WOLFRAM_PW: ${{ secrets.Wolfram_PW }}
       - name: Build with link
-        run: cargo build --all --features "auto-link macros"
+        run: cargo build --workspace --features "auto-link macros"
