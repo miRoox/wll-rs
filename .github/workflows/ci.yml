@@ -4,18 +4,13 @@ on: [push, pull_request]
 
 jobs:
   rust-test:
-    name: Run rust tests on ${{ matrix.name }}
+    name: Run rust tests on ${{ matrix.os }} with ${{ matrix.features }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: macOS
-            os: macos-latest
-          - name: Windows
-            os: windows-latest
-          - name: Ubuntu
-            os: ubuntu-latest
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        features: ["macros", "macros num-complex"]
     steps:
       - uses: actions/checkout@v2
       - name: Setup rust
@@ -27,9 +22,9 @@ jobs:
         run: .\.github\workflows\intall-llvm.ps1
         shell: powershell
       - name: Build
-        run: cargo build --workspace --verbose --features "macros"
+        run: cargo build --workspace --verbose --features ${{ matrix.features }}
       - name: Test
-        run: cargo test --workspace --verbose --features "macros"
+        run: cargo test --workspace --verbose --features ${{ matrix.features }}
   wolfram-test:
     name: Run Wolfram tests
     runs-on: ubuntu-latest
