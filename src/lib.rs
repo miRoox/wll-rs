@@ -13,11 +13,16 @@
 #[allow(unused_imports)]
 #[macro_use]
 extern crate wll_macros;
+#[cfg(feature = "complex-num")]
+extern crate num_complex;
 #[doc(hidden)]
 pub extern crate wll_sys as sys;
 
+#[cfg(not(feature = "complex-num"))]
 pub use complex::Complex;
 pub use errors::{Error, ErrorKind};
+#[cfg(feature = "complex-num")]
+pub use num_complex::Complex;
 #[cfg(feature = "macros")]
 #[cfg_attr(docsrs, doc(cfg(feature = "macros")))]
 pub use wll_macros::*;

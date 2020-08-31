@@ -25,11 +25,13 @@ members = [
 [features]
 default = []
 macros = ["wll-macros"]
+complex-num = ["num-complex"]
 auto-link = ["wll-sys/auto-link"]
 
 [dependencies]
 wll-sys = { version = "0.1", path = "sys" }
 wll-macros = { version = "0.1", path = "macros", optional = true }
+num-complex = { version = "0.3", optional = true}
 
 [dev-dependencies]
 trybuild = { version = "1.0", features = ["diff"] }
