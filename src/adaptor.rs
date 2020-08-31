@@ -1,7 +1,7 @@
 //! Some adaptor interface for Wolfram LibraryLink.
 
 use crate::errors::{Error, ErrorKind};
-use crate::Result;
+use crate::{Complex, Result};
 use std::convert::TryInto;
 use std::num::Wrapping;
 use sys::{mbool, mcomplex, mint, mreal, MArgument, MImage, MNumericArray, MSparseArray, MTensor};
@@ -245,6 +245,52 @@ macro_rules! impl_real_adaptor {
 }
 
 impl_real_adaptor!(f32, f64);
+
+macro_rules! impl_complex_real_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl InputAdaptor for Complex<$t> {
+                type Input = mcomplex;
+
+                #[inline]
+                fn mtype_try_from(input: Self::Input) -> Result<Self> {
+                    Ok(Self::new(input.ri[0] as $t, input.ri[1] as $t))
+                }
+            }
+            impl OutputAdaptor for Complex<$t> {
+                type Output = mcomplex;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    Ok(Self::Output {
+                        ri: [self.re as mreal, self.im as mreal],
+                    })
+                }
+            }
+        )+
+    };
+}
+
+// Note: Complex<integral type> can only be used in output.
+macro_rules! impl_complex_int_adaptor {
+    ($($t:ty),+) => {
+        $(
+            impl OutputAdaptor for Complex<$t> {
+                type Output = mcomplex;
+
+                #[inline]
+                fn try_into_mtype(self) -> Result<Self::Output> {
+                    Ok(Self::Output {
+                        ri: [self.re as mreal, self.im as mreal],
+                    })
+                }
+            }
+        )+
+    };
+}
+
+impl_complex_real_adaptor!(f32, f64);
+impl_complex_int_adaptor!(i8, u8, i16, u16, i32, u32, i64, u64, i128, u128, isize, usize);
 
 #[cfg(test)]
 mod tests {
