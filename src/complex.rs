@@ -272,7 +272,7 @@ where
     }
 }
 
-#[cfg(all(test, not(feature = "complex-num")))]
+#[cfg(all(test, not(feature = "num-complex-type")))]
 mod tests {
     use super::*;
 

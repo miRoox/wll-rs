@@ -25,7 +25,7 @@ members = [
 [features]
 default = []
 macros = ["wll-macros"]
-complex-num = ["num-complex"]
+num-complex-type = ["num-complex"]
 auto-link = ["wll-sys/auto-link"]
 
 [dependencies]
