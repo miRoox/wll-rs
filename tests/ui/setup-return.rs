@@ -1,9 +1,9 @@
 #![allow(clippy::unit_arg)]
-use wll::{Error, ErrorKind, Result};
+use wll::{ErrorKind, Result};
 
 #[wll::setup]
 fn setup() -> Result<()> {
-    Err(Error::from(ErrorKind::FunctionError))
+    Err(ErrorKind::FunctionError.into())
 }
 
 #[wll::teardown]

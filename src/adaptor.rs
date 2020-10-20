@@ -1,7 +1,6 @@
 //! Some adaptor interface for Wolfram LibraryLink.
 
-use crate::errors::{Error, ErrorKind};
-use crate::{Complex, Result};
+use crate::{Complex, ErrorKind, Result};
 use std::convert::TryInto;
 use std::num::Wrapping;
 use sys::{mbool, mcomplex, mint, mreal, MArgument, MImage, MNumericArray, MSparseArray, MTensor};
@@ -105,7 +104,7 @@ macro_rules! impl_argument_getter {
                 unsafe {
                     let ptr = arg.$fd;
                     if ptr.is_null() {
-                        return Err(Error::from(ErrorKind::TypeError));
+                        return Err(ErrorKind::TypeError.into());
                     }
                     T::mtype_try_from(std::ptr::read(ptr))
                 }
@@ -122,7 +121,7 @@ macro_rules! impl_argument_setter {
                 unsafe {
                     let ptr = arg.$fd;
                     if ptr.is_null() {
-                        return Err(Error::from(ErrorKind::TypeError));
+                        return Err(ErrorKind::TypeError.into());
                     }
                     std::ptr::write(ptr, self.try_into_mtype()?);
                 }
@@ -180,7 +179,7 @@ macro_rules! impl_int_adaptor {
                 fn mtype_try_from(input: Self::Input) -> Result<Self> {
                     input
                         .try_into()
-                        .map_err(|_| Error::from(ErrorKind::TypeError))
+                        .map_err(|_| ErrorKind::TypeError.into())
                 }
             }
             impl OutputAdaptor for $t {
@@ -189,7 +188,7 @@ macro_rules! impl_int_adaptor {
                 #[inline]
                 fn try_into_mtype(self) -> Result<Self::Output> {
                     self.try_into()
-                        .map_err(|_| Error::from(ErrorKind::TypeError))
+                        .map_err(|_| ErrorKind::TypeError.into())
                 }
             }
         )+

@@ -1,6 +1,6 @@
 // Some internal tools to access the global status.
 
-use crate::{Error, ErrorKind, Result};
+use crate::{ErrorKind, Result};
 use std::ptr;
 use std::ptr::NonNull;
 use std::sync::atomic::{AtomicPtr, Ordering};
@@ -11,7 +11,7 @@ static CURRENT_LIB_DATA: AtomicPtr<sys::st_WolframLibraryData> = AtomicPtr::new(
 #[inline]
 pub fn initialize_lib_data(lib_data: sys::WolframLibraryData) -> Result<()> {
     if lib_data.is_null() {
-        return Err(Error::from(ErrorKind::FunctionError));
+        return Err(ErrorKind::FunctionError.into());
     }
     CURRENT_LIB_DATA.store(lib_data, Ordering::Relaxed);
     Ok(())
@@ -26,7 +26,7 @@ where
     if let Some(data) = NonNull::new(CURRENT_LIB_DATA.load(Ordering::Relaxed)) {
         f(data)
     } else {
-        Err(Error::from(ErrorKind::FunctionError))
+        Err(ErrorKind::FunctionError.into())
     }
 }
 
