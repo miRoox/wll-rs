@@ -1,3 +1,12 @@
+// from WolframLibrary.h
+
+use crate::{
+    st_WolframCompileLibrary_Functions, st_WolframIOLibrary_Functions,
+    st_WolframImageLibrary_Functions, st_WolframNumericArrayLibrary_Functions,
+    st_WolframRawArrayLibrary_Functions, st_WolframRuntimeData, st_WolframSparseLibrary_Functions,
+    DataStore, MImage, MInputStream, MNumericArray, MOutputStream, MRawArray, MSparseArray, WSENV,
+    WSLINK,
+};
 use std::os::raw;
 
 pub type errcode_t = raw::c_int;
@@ -23,28 +32,6 @@ pub struct st_MTensor {
 pub type MTensor = *mut st_MTensor;
 
 #[repr(C)]
-#[derive(Debug, Clone)]
-pub struct st_MNumericArray {
-    _unused: [u8; 0],
-}
-pub type MRawArray = *mut st_MNumericArray;
-pub type MNumericArray = *mut st_MNumericArray;
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct MSparseArray_struct {
-    _unused: [u8; 0],
-}
-pub type MSparseArray = *mut MSparseArray_struct;
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct IMAGEOBJ_ENTRY {
-    _unused: [u8; 0],
-}
-pub type MImage = *mut IMAGEOBJ_ENTRY;
-
-#[repr(C)]
 #[derive(Copy, Clone)]
 pub union MArgument {
     pub boolean: *mut mbool,
@@ -58,44 +45,6 @@ pub union MArgument {
     pub utf8string: *mut *mut raw::c_char,
     _union_align: u64,
 }
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct MLink {
-    _unused: [u8; 0],
-}
-pub type MLINK = *mut MLink;
-pub type WSLINK = *mut MLink;
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct ml_environment {
-    _unused: [u8; 0],
-}
-pub type MLENV = *mut ml_environment;
-pub type MLEnvironment = MLENV;
-pub type WSENV = *mut ml_environment;
-pub type WSEnvironment = WSENV;
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct st_MInputStream {
-    _unused: [u8; 0],
-}
-pub type MInputStream = *mut st_MInputStream;
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct st_MOutputStream {
-    _unused: [u8; 0],
-}
-
-#[repr(C)]
-#[derive(Debug, Clone)]
-pub struct st_DataStore {
-    _unused: [u8; 0],
-}
-pub type DataStore = *mut st_DataStore;
 
 pub const WolframLibraryVersion: mint = 6;
 pub const True: mbool = mbool(1);

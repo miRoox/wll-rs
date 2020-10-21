@@ -15,7 +15,7 @@
 
 mod global;
 
-pub use global::*;
+//pub use global::*;
 
 mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
