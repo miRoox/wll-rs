@@ -2,10 +2,9 @@
 
 use crate::{
     st_WolframCompileLibrary_Functions, st_WolframIOLibrary_Functions,
-    st_WolframImageLibrary_Functions, st_WolframNumericArrayLibrary_Functions,
-    st_WolframRuntimeData, DataStore, MImage, MInputStream, MNumericArray, MOutputStream,
-    MRawArray, MSparseArray, WolframRawArrayLibrary_Functions, WolframSparseLibrary_Functions,
-    WSENV, WSLINK,
+    st_WolframImageLibrary_Functions, st_WolframRuntimeData, DataStore, MImage, MInputStream,
+    MNumericArray, MOutputStream, MRawArray, MSparseArray, WolframNumericArrayLibrary_Functions,
+    WolframRawArrayLibrary_Functions, WolframSparseLibrary_Functions, WSENV, WSLINK,
 };
 use std::os::raw;
 
@@ -206,7 +205,7 @@ pub struct st_WolframLibraryData {
         Option<unsafe extern "C" fn(path: *mut raw::c_char, type_: raw::c_char) -> mbool>,
     pub protectedModeQ: Option<unsafe extern "C" fn() -> mbool>,
     pub rawarrayLibraryFunctions: WolframRawArrayLibrary_Functions,
-    pub numericarrayLibraryFunctions: *mut st_WolframNumericArrayLibrary_Functions,
+    pub numericarrayLibraryFunctions: WolframNumericArrayLibrary_Functions,
     pub setParallelThreadNumber: Option<unsafe extern "C" fn(arg1: raw::c_int) -> raw::c_int>,
     pub restoreParallelThreadNumber: Option<unsafe extern "C" fn(arg1: raw::c_int)>,
     pub getParallelThreadNumber: Option<unsafe extern "C" fn() -> raw::c_int>,

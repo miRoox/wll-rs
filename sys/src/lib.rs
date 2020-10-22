@@ -14,6 +14,7 @@
 #![allow(clippy::all)]
 
 mod global;
+mod numeric_array;
 mod raw_array;
 mod sparse;
 
