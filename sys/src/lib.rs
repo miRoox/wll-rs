@@ -14,6 +14,7 @@
 #![allow(clippy::all)]
 
 mod global;
+mod raw_array;
 mod sparse;
 
 //pub use global::*;
