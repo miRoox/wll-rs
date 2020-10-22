@@ -3,8 +3,8 @@
 use crate::{
     st_WolframCompileLibrary_Functions, st_WolframIOLibrary_Functions,
     st_WolframImageLibrary_Functions, st_WolframNumericArrayLibrary_Functions,
-    st_WolframRawArrayLibrary_Functions, st_WolframRuntimeData, st_WolframSparseLibrary_Functions,
-    DataStore, MImage, MInputStream, MNumericArray, MOutputStream, MRawArray, MSparseArray, WSENV,
+    st_WolframRawArrayLibrary_Functions, st_WolframRuntimeData, DataStore, MImage, MInputStream,
+    MNumericArray, MOutputStream, MRawArray, MSparseArray, WolframSparseLibrary_Functions, WSENV,
     WSLINK,
 };
 use std::os::raw;
@@ -171,7 +171,7 @@ pub struct st_WolframLibraryData {
         Option<unsafe extern "C" fn(name: *const raw::c_char) -> mbool>,
     pub ioLibraryFunctions: *mut st_WolframIOLibrary_Functions,
     pub getWSLINKEnvironment: Option<unsafe extern "C" fn(arg1: WolframLibraryData) -> WSENV>,
-    pub sparseLibraryFunctions: *mut st_WolframSparseLibrary_Functions,
+    pub sparseLibraryFunctions: WolframSparseLibrary_Functions,
     pub imageLibraryFunctions: *mut st_WolframImageLibrary_Functions,
     pub registerLibraryExpressionManager: Option<
         unsafe extern "C" fn(

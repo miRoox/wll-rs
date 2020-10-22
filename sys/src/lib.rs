@@ -14,6 +14,7 @@
 #![allow(clippy::all)]
 
 mod global;
+mod sparse;
 
 //pub use global::*;
 
